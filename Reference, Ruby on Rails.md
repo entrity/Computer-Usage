@@ -38,3 +38,15 @@ u.table j;
 u.set [[s[:campaign], p[:name]]];
 puts(u.to_sql);
 ```
+
+## Capistrano (deployment)
+
+### List tasks
+```bash
+bundle exec cap -T
+```
+
+### Deploy to only select servers in a multi-server stage (as when using 3 servers for production)
+```bash
+HOSTS=66.228.51.251:4000 bundle exec cap production deploy
+```
