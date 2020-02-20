@@ -21,3 +21,6 @@ Maybe try to scroll the element into view?
 ```javascript
 browser.actions().mouseMove(element).perform()
 ```
+#### Failed: javascript error: Failed to execute 'elementsFromPoint' on 'Document': The provided double value is non-finite.
+
+You might be trying to run a scroll operation (as shown above) on a matcher that matches more than one element.
