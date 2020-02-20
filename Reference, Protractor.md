@@ -15,3 +15,9 @@ chromeOptions: { args: [ "--headless", "--disable-gpu", "--window-size=1920,1080
 ```
 
 Maybe add a `browser.sleep(100)` before or after your `click()` call?
+
+Maybe try to scroll the element into view?
+
+```javascript
+browser.actions().mouseMove(element).perform()
+```
