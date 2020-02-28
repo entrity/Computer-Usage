@@ -1,6 +1,8 @@
 # Encryption, Archiving, Etc.
 
 ## Encrypt a file with GPG
+_see also [Reference, GPG.md](//github.com/entrity/Computer-Usage/blob/master/Reference%2C%20GPG.md)_
+
 ### Using a passphrase (symmetric, no key)
 ```bash
 # Non-interactive
