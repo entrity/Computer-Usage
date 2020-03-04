@@ -3,6 +3,22 @@
 - `-X`  Enables X11 (display) forwarding. (But this allows an attacker to listen to my keystrokes.)
 - create a pipe between machines
 
+## SSHD
+
+### chroot jail
+
+I set up the following in `/etc/ssh/sshd_config`
+```
+Match Group chrootjail
+	ChrootDirectory /var/chrootjail/
+	PasswordAuthentication no
+	AuthorizedKeysFile /var/chrootjail/home/%u/.ssh/authorized_keys
+```
+
+To make the jail have an interface, though, I needed to copy `/bin/bash` into the jail and also its dependencies, which are given from `ldd /bin/bash`.
+
+I also had to create the `/var/chrootjail/home` directory and create a user and set his home directory and set his group membership.
+
 ## SSHFS
 
 ```bash
