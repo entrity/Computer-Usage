@@ -38,3 +38,7 @@ node_modules/protractor/bin/webdriver-manager update --versions.chrome 80.0.3987
 ```
 
 (You can uninstall all installed drivers and Chromes with `node_modules/protractor/bin/webdriver-manager clean`.)
+
+#### (Prints 'Started', then hangs for a long time before failing)
+
+You need to actually have a server serving an instance of your app. Run `rails s`.
