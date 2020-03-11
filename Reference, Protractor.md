@@ -41,4 +41,5 @@ node_modules/protractor/bin/webdriver-manager update --versions.chrome 80.0.3987
 
 #### (Prints 'Started', then hangs for a long time before failing)
 
-You need to actually have a server serving an instance of your app. Run `rails s`.
+* You need to actually have a server serving an instance of your app. Run `rails s`.
+* Or maybe your `baseUrl` in your config file is not pointing to the right place for your app server.
