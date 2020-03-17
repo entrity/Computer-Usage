@@ -11,8 +11,12 @@ Other "mail interceptors" exist.
 - Bullet - Notifies you in development when you have an `N+1` query problem.
 - Commonmarkup - Renders markup as html
 - Grape API - api framework
+- factory_bot - build/create model instances for test/dev
 - mini_record - allows for automatic migrations (no db migrations files)
+- Pry, rails-pry - debugger
+- Redis - pub/sub
 - Rubocop - Enforces style, lints ruby code
+- Sidekiq - spawn/schedule background jobs and external tasks
 - spork - holds rails process, ready to spin up a test or server or console quickly
 - Swagger (swagger-grape) - automatically document api. can be used in conjunction with grape
 
