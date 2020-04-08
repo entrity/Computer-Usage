@@ -1,8 +1,12 @@
-# Javascript testing frameworks
+# Protractor
 
-## Protractor
+## Troubleshooting
 
-### Errors
+### `browser.sleep(...)`
+
+Use `browser.sleep(milliseconds)` to have the browser stop at a point so that you can open DevTools and fiddle around or click buttons. But this absolutely _WILL NOT_ pause if you put in a number that is _too large_. I find it works with `2**23` but not with `2**33`.
+
+## Errors
 
 * #### WebDriverError: element not interactable
 
