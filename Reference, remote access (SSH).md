@@ -19,6 +19,12 @@ To make the jail have an interface, though, I needed to copy `/bin/bash` into th
 
 I also had to create the `/var/chrootjail/home` directory and create a user and set his home directory and set his group membership.
 
+In `/etc/passwd`, I use the usual paths: 
+```
+jailed-user:x:1007:1009::/home/jailed-user:/bin/bash
+```
+...but I created the `home` directory and its contents in `/var/chrootjail`. (The home dirs themselves are owned by the users and have permissions `0700`.) (Don't forget to add the user to the `chrootjail` group, since I'm using a group-based rule.)
+
 ## SSHFS
 
 ```bash
