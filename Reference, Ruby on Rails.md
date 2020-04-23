@@ -54,3 +54,14 @@ bundle exec cap -T
 ```bash
 HOSTS=66.228.51.251:4000 bundle exec cap production deploy
 ```
+
+## Bundler
+
+I've had a few problems with bundler, particularly when using rvm. _NB:_ if your app needs a particular version of bundler and you have one in a global/default gemset that is somehow interfering, it's insufficient to remove bundler using the usual commands. (I don't remember the right things to do, maybe `rvm gemset use global`, then uninstall 1.1.3 from global. You may need to downgrade rubygems too: `gem update --system 2.7.6`.)
+
+### "Could not fetch specs from http://rubygems.org/"
+If bundler complains that it can't access rubygems.org, disable IPv6:
+```bash
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 # This was actually unnecssary for me; the previous command changed this value too.
+```
