@@ -1,3 +1,14 @@
+## Commands
+```bash
+docker ps # Show containers
+docker image ls
+docker commit $CONTAINER [$TAG] # Take a snapshot of the container
+docker run -it $IMAGE bash
+docker exec -it $CONTAINER bash
+# Clean up exited containers
+docker ps -a -f status=exited | cut -d\  -f1 | grep -v CONTAINER | xargs docker rm
+```
+
 ## Running GUI programs on Docker
 See http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 
