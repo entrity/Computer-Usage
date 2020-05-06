@@ -5,7 +5,7 @@ qdbus
 qdbus --system
 
 # List service methods (using gdbus)
-gdbus introspect [-s|-e] -d $SERVICE -o $PATH
+gdbus introspect [-y|-e] -d $SERVICE -o $PATH
 # List service methods (using dbus-send)
 dbus-send [--system|--session] --type=method_call --print-reply --dest=$SERVICE $PATH org.freedesktop.DBus.Introspectable.Introspect
 # e.g.
