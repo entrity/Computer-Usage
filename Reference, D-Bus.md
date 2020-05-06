@@ -13,7 +13,7 @@ gdbus introspect -e -d org.gnome.ScreenSaver -o /org/gnome/ScreenSaver
 dbus-send --system --type=method_call --print-reply --dest=org.gnome.DisplayManager /org/gnome/DisplayManager  org.freedesktop.DBus.Introspectable.Introspect
 
 # Call method (using gdbus)
-gdbus call [-s|-e] -d $SERVICE -o $PATH -m $METHOD
+gdbus call [-y|-e] -d $SERVICE -o $PATH -m $METHOD
 # Call method (using dbus-send)
 dbus-send [--system|--session] --type=method_call --print-reply --dest=$SERVICE $PATH $METHOD
 # e.g.
