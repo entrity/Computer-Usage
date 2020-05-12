@@ -2,39 +2,17 @@
 
 ## Set up
 
-Follow the tutorial at
-https://jenkins.io/doc/tutorials/build-a-java-app-with-maven/
-for help
-
-### Overview
+Follow the tutorial at https://jenkins.io/doc/tutorials/build-a-java-app-with-maven/ for help
 
 Set up three Docker images:
 
 1. Jenkins
 2. Blue Ocean (a Jenkins plugin)
-3. One for running your app
+3. One for your private image registry
 
-The first two images should be running as servers all the time.
+(Jenkins will start a container to run the pipeline on its own docker server)
 
-### Running your app
-
-This image should have a volume mounted from your machine, which contains the git repository and any artifacts that you don't want to re-download or re-build every time your Jenkins pipeline is triggered.
-
-
-
-New item
-	Pipeline
-		General
-			Github Project (check)
-		Build Triggers
-			Trigger builds remotely (check and provide a token)
-				M2UzNWVjZmQ3N2JlOWJhMTk4NjE1ZDEx
-				Use the following URL to trigger build remotely: JENKINS_URL/job/tutorial/build?token=TOKEN_NAME or /buildWithParameters?token=TOKEN_NAME
-				Optionally append &cause=Cause+Text to provide text that will be included in the recorded build cause.
-				
-## In Jenkinsfile
-
-### Private registry
+## Private registry
 
 ```bash
 # Tag the image with the registry domain.
@@ -43,7 +21,23 @@ docker tag insureio reg.qa/insureio:2.wjre
 docker push reg.qa/insureio:2.wjre
 ```
 
-Use `pipeline.agent.docker.image 'reg.qa/insureio:2.wjre` and `pipeline.agent.docker.registryUrl 'https://reg.qa/`.
+In your Jenkinsfile, set `pipeline.agent.docker.image` to `'reg.qa/insureio:2.wjre'` and `pipeline.agent.docker.registryUrl` to `'https://reg.qa/'`.
+
+### Testing private registry
+
+Make sure the repo responds:
+
+```bash
+# Get the name of the running registry container
+docker ps | grep registry # See last column
+# Get the ip of the running registry container
+docker inspect $REGISTRY | grep IPAddress
+# Try curl
+curl -k https://$IPADDR/v2/_catalog
+# Try curl from jenkins container
+docker exec -t jenkins-docker /sbin/apk add curl
+docker exec -t jenkins-docker curl https://reg.qa/v2/_catalog
+```
 
 ### Mounting
 
@@ -64,7 +58,13 @@ The source refers to a location in the Jenkins container, not to a volume nor to
 		
 ## Troubleshooting
 
-Running a local registry of Docker images, you might have SSL certificate refused.
+```bash
+# Enter a shell for jenkins-docker
+docker exec -it jenkins-docker sh
+# 
+```
+
+### Running a local registry of Docker images, you might have SSL certificate refused.
 
 1. Verify the cert with `openssl verify -cacert myCA.pem myDomain.crt`
 1. Put the cert onto `jenkins-docker` (see below). If `curl` succeeds there but `docker pull` in the pipeline still fails, you probably need to add the cert to `/etc/docker/certs` in the host and then restart the docker service (also on the host).
@@ -78,3 +78,7 @@ docker exec -u 0 jenkins-docker update-ca-certificates
 docker exec jenkins-docker apk add curl
 docker exec jenkins-docker curl https://reg.qa/v2/_catalog
 ```
+
+### Jenkins workspace does not exist
+
+It might be as simple as adding `sh 'mkdir ${WORKSPACE}'` at the top of the pipeline. But it might require setting up certificates for the local image registry again.
