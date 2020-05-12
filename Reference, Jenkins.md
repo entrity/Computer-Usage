@@ -20,8 +20,9 @@ docker tag insureio reg.qa/insureio:2.wjre
 # Push it to the private registry.
 docker push reg.qa/insureio:2.wjre
 # Add ca certs for registry to jenkins-docker (unsure which files are needed)
-docker cp myCA* jenkins-docker:/usr/local/share/ca-certificates
-docker exec -t jenkins-docker update-ca-certificates
+docker cp reg.qa.crt jenkins-docker:/usr/local/share/ca-certificates/domain.crt
+docker cp myCA.pem jenkins-docker:/usr/local/share/ca-certificates
+docker exec -u 0 jenkins-docker update-ca-certificates
 ```
 
 In your Jenkinsfile, set `pipeline.agent.docker.image` to `'reg.qa/insureio:2.wjre'` and `pipeline.agent.docker.registryUrl` to `'https://reg.qa/'`.
@@ -84,4 +85,4 @@ docker exec jenkins-docker curl https://reg.qa/v2/_catalog
 
 ### Jenkins workspace does not exist
 
-It might be as simple as adding `sh 'mkdir ${WORKSPACE}'` at the top of the pipeline. But it might require setting up certificates for the local image registry again.
+It might be as simple as adding `sh 'mkdir -p "${WORKSPACE}"'` at the top of the pipeline. But it might require setting up certificates for the local image registry again.
