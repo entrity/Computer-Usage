@@ -25,6 +25,7 @@ for CONTAINER in jenkins-docker jenkins-blueocean; do
   docker cp myCA.pem $CONTAINER:/usr/local/share/ca-certificates
   docker exec -u 0 $CONTAINER update-ca-certificates
 done
+# May need to restart the docker service first? second?
 ```
 
 In your Jenkinsfile, set `pipeline.agent.docker.image` to `'reg.qa/insureio:2.wjre'` and `pipeline.agent.docker.registryUrl` to `'https://reg.qa/'`.
