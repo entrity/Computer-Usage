@@ -19,10 +19,12 @@ Set up three Docker images:
 docker tag insureio reg.qa/insureio:2.wjre
 # Push it to the private registry.
 docker push reg.qa/insureio:2.wjre
-# Add ca certs for registry to jenkins-docker (unsure which files are needed)
-docker cp reg.qa.crt jenkins-docker:/usr/local/share/ca-certificates/domain.crt
-docker cp myCA.pem jenkins-docker:/usr/local/share/ca-certificates
-docker exec -u 0 jenkins-docker update-ca-certificates
+# Add ca certs for registry to jenkins (unsure which files are needed)
+for CONTAINER in jenkins-docker jenkins-blueocean; do
+  docker cp reg.qa.crt $CONTAINER:/usr/local/share/ca-certificates/domain.crt
+  docker cp myCA.pem $CONTAINER:/usr/local/share/ca-certificates
+  docker exec -u 0 $CONTAINER update-ca-certificates
+done
 ```
 
 In your Jenkinsfile, set `pipeline.agent.docker.image` to `'reg.qa/insureio:2.wjre'` and `pipeline.agent.docker.registryUrl` to `'https://reg.qa/'`.
