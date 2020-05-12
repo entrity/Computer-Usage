@@ -62,6 +62,10 @@ The source refers to a location in the Jenkins container, not to a volume nor to
         }
     }
 ```
+
+## Pipeline
+
+- Make sure you're _NOT_ using the "Lightweight checkout," which has a bug that makes it not evaluate variables in the "Branches to build" section.
 		
 ## Troubleshooting
 
