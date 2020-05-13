@@ -17,6 +17,8 @@ gpg --edit-key ID sign
 
 # Trust a key (without signing it)
 gpg --edit-key ID trust
+# One-liner
+echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key ID trust
 ```
 
 ### Import, export
