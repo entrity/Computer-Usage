@@ -7,6 +7,22 @@ sudo install -y texstudio
 sudo apt install -y texlive-fonts-recommended
 ```
 
+## Fillable forms
+See https://tex.stackexchange.com/questions/14842/creating-fillable-pdfs
+```latex
+\documentclass{article}
+\usepackage{hyperref}
+\begin{document}
+\begin{Form}[action={http://your-web-server.com/path/receiveform.cgi}]
+\begin{tabular}{l}
+    \TextField{Name} \\\\
+    \CheckBox[width=1em]{Check} \\\\
+    \Submit{Submit}\\
+\end{tabular}
+\end{Form}
+\end{document}
+```
+
 ### Troubleshooting
 
 #### Problem
