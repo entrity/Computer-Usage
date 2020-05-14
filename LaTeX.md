@@ -15,7 +15,7 @@ sudo apt install -y texlive-fonts-recommended
 
 ## Command line
 ```bash
-
+pdflatex myfile.tex
 ```
 
 ## Fillable forms
