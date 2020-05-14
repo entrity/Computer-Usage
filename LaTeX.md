@@ -1,10 +1,21 @@
 # LaTeX
 
+## Do you need to run this locally?
+[Overleaf](https://www.overleaf.com/) is an awesome option for web editing.
+
+## Setup
 ```bash
+# Install 
+sudo apt install -y texlive-latex
 # Get a nice IDE
-sudo install -y texstudio
+sudo apt install -y texstudio
 # Initialize fonts
 sudo apt install -y texlive-fonts-recommended
+```
+
+## Command line
+```bash
+
 ```
 
 ## Fillable forms
