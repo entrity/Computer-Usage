@@ -4,6 +4,8 @@
 [Overleaf](https://www.overleaf.com/) is an awesome option for web editing.
 
 ## Setup
+<details><summary>Installation, configuration</summary>
+
 #### Ubuntu
 ```bash
 # Install 
@@ -23,6 +25,7 @@ sudo yum install -y texlive-texlive.infra.noarch \
   texlive-collection-fontsrecommended.noarch \
   texlive-collection-latexrecommended.noarch
 ```
+</details>
 
 ## Command line
 ```bash
@@ -56,22 +59,16 @@ See https://tex.stackexchange.com/questions/14842/creating-fillable-pdfs
 </details>
 
 ### Troubleshooting
-
+<details><summary>Problems & Solutions</summary>
 #### Problem
 `Font TS1/ntxtlf/m/n/12=ts1-qtmr at 12.0pt not loadable: Metric (TFM) file not found`
 #### Solution
 Install the missing package (containing `ts1-qtmr`, in this case)
 
 #### Problem
-`Cannot determine type of tlpdb from /home/markham/texmf!`
-#### Solution
-Try looking for the package you want with `apt`
-
-#### Problem
 ```bash
 /usr/bin/tlmgr: Initialization failed (in setup_unix_one):
-/usr/bin/tlmgr: could not find a usable xzdec.
-/usr/bin/tlmgr: Please install xzdec and try again.
 ```
 #### Solution
-`sudo apt-get install xzdec`
+Don't even use `tlmgr`. It isn't available on all platforms. Try to use your distro package manager (e.g. `apt`, `yum`).
+</details>
