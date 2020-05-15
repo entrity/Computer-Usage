@@ -1,38 +1,35 @@
 # LaTeX
 
-## Do you need to run this locally?
+## Do you _need_ to run this locally?
 [Overleaf](https://www.overleaf.com/) is an awesome option for web editing.
-
-## Setup
-<details><summary>Installation, configuration</summary>
-
-#### Ubuntu
-```bash
-# Install 
-sudo apt install -y texlive-latex
-# Install decrompression tool s.t. tlmgr will work
-sudo apt-get install xzdec
-# Get a nice IDE
-sudo apt install -y texstudio \
-  texlive-fonts-recommended \
-  texlive-latex-recommended \
-  texlive-latex-extra
-```
-#### Centos
-```bash
-sudo yum install -y texlive-texlive.infra.noarch \
-  texlive-datatool.noarch \
-  texlive-collection-fontsrecommended.noarch \
-  texlive-collection-latexrecommended.noarch
-```
-</details>
 
 ## Command line
 ```bash
 pdflatex myfile.tex
 ```
 
-## Fillable forms
+## Tex
+
+```latex
+% Absolute positioning
+\vspace{-2cm}
+\hspace{4cm}
+
+% Background
+\usepackage{background}
+\usepackage{graphicx}
+\backgroundsetup{
+scale=1,
+color=black,
+opacity=1,
+angle=0,
+contents={%
+  \includegraphics[width=\paperwidth,height=\paperheight]{MyImg}
+  }%
+}
+```
+
+### Fillable forms
 See https://tex.stackexchange.com/questions/14842/creating-fillable-pdfs
 <details><summary>Example .tex</summary>
 
@@ -55,6 +52,31 @@ See https://tex.stackexchange.com/questions/14842/creating-fillable-pdfs
   \TextField[name=poit,value=gnosh]{}
 \end{Form}
 \end{document}
+```
+</details>
+
+
+## Setup
+<details><summary>Installation, configuration</summary>
+
+#### Ubuntu
+```bash
+# Install 
+sudo apt install -y texlive-latex
+# Install decrompression tool s.t. tlmgr will work
+sudo apt-get install xzdec
+# Get a nice IDE
+sudo apt install -y texstudio \
+  texlive-fonts-recommended \
+  texlive-latex-recommended \
+  texlive-latex-extra
+```
+#### Centos
+```bash
+sudo yum install -y texlive-texlive.infra.noarch \
+  texlive-datatool.noarch \
+  texlive-collection-fontsrecommended.noarch \
+  texlive-collection-latexrecommended.noarch
 ```
 </details>
 
