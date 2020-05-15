@@ -30,7 +30,8 @@ contents={%
 ```
 
 ### Fillable forms
-See https://tex.stackexchange.com/questions/14842/creating-fillable-pdfs
+Cf. https://tex.stackexchange.com/questions/14842/creating-fillable-pdfs
+Cf. http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/hyperref/doc/manual.html
 <details><summary>Example .tex</summary>
 
 ```latex
@@ -82,6 +83,7 @@ sudo yum install -y texlive-texlive.infra.noarch \
 
 ### Troubleshooting
 <details><summary>Problems & Solutions</summary>
+
 #### Problem
 `Font TS1/ntxtlf/m/n/12=ts1-qtmr at 12.0pt not loadable: Metric (TFM) file not found`
 #### Solution
