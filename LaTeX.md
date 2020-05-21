@@ -81,6 +81,35 @@ sudo yum install -y texlive-texlive.infra.noarch \
 ```
 </details>
 
+<details><summary>Install as user (non-root)</summary>
+
+```bash
+# Get source
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar xzf install-tl-unx.tar.gz
+# Your release dir may differ
+cd install-tl-20200515
+>profile.tmp.tex cat <<-EOF
+TEXDIR $HOME/.texlive/2020
+TEXMFLOCAL $HOME/.texlive/texmf-local
+TEXMFSYSVAR $HOME/.texlive/2020/texmf-var
+TEXMFSYSCONFIG $HOME/.texlive/2020/texmf-config
+TEXMFVAR $HOME/.texlive2020/texmf-var
+TEXMFCONFIG $HOME/.texlive2020/texmf-config
+TEXMFHOME $HOME/texmf
+EOF
+nohup ./install-tl -profile profile.tmp.tex &
+```
+
+Update your PATH:
+
+```bash
+if ! [[ $PATH =~ ~/.texlive/2020/bin/x86_64-linux ]]; then
+  PATH=$PATH:~/.texlive/2020/bin/x86_64-linux
+fi
+```
+</details>
+
 ### Troubleshooting
 <details><summary>Problems & Solutions</summary>
 
