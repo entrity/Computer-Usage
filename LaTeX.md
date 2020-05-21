@@ -58,6 +58,9 @@ Cf. http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/hyperref/doc/manual.htm
 
 
 ## Setup
+
+_cf._ https://www.tug.org/texlive/quickinstall.html
+
 <details><summary>Installation, configuration</summary>
 
 #### Ubuntu
