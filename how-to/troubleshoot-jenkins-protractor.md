@@ -53,8 +53,10 @@ fi
 
 ```bash
 grep -q compulife.one /etc/hosts || base64 -d <<< NjYuMjI4LjUxLjI1MSBjb21wdWxpZmUub25lCg== >> /etc/hosts
-sed -i 's@args: \[ @args: ["--disable-dev-shm-usage", "--no-sandbox", @' config/protractor.js'
+cd Insureio
+sed -i 's@args: \[ @args: ["--disable-dev-shm-usage", "--no-sandbox", @' config/protractor.js
 /usr/libexec/mysqld --user=root &
+bundle exec rake db:clean db:seed db:seed:protractor
 bundle exec rails server -e development -b 0.0.0.0
 ```
 
