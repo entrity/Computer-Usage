@@ -53,7 +53,10 @@ fi
 
 ```bash
 grep -q compulife.one /etc/hosts || base64 -d <<< NjYuMjI4LjUxLjI1MSBjb21wdWxpZmUub25lCg== >> /etc/hosts
+grep pinney.local.com /etc/hosts || echo '127.0.0.1 pinney.local.com' >> /etc/hosts
+grep nmb.local.com /etc/hosts || echo '127.0.0.1 nmb.local.com' >> /etc/hosts
 cd Insureio
+node_modules/protractor/bin/webdriver-manager update --versions.chrome 80.0.3987.106 --versions.standalone 3.141.59 --versions.gecko v0.26.0
 sed -i 's@args: \[ @args: ["--disable-dev-shm-usage", "--no-sandbox", @' config/protractor.js
 /usr/libexec/mysqld --user=root &
 bundle exec rake db:clean db:seed db:seed:protractor underwriting:spec:protractor
