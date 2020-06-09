@@ -1,0 +1,240 @@
+/*
+
+This Jenkinsfile expects the "Generic Webhook Trigger" (a Jenkins plugin)
+to set the following variables:
+
+GITAFTER $.after default: master
+GITBEFORE $.before
+GITPUSHER $.pusher.name
+GITREF $.ref
+
+This Jenkinsfile expects you to copy the Insureio config (YAML) files into its
+volume.
+
+*/
+
+def run_mysqld () {
+    /* Start server only if it is not already running */
+    sh '[[ -e /var/lib/mysql/mysql.sock ]] || /usr/libexec/mysqld --user=root &'
+    /* Wait for server to come online before returning */
+    sh 'for x in 1 2 3 4 5; do [[ -e /var/lib/mysql/mysql.sock ]] || sleep 1; done'
+}
+
+def set_status (state, user, pass) {
+    sh "curl -u ${user}:${pass} https://api.github.com/repos/pic-development/Insureio/statuses/`git rev-parse HEAD` -d \'{\"state\":\"$state\",\"description\":\"$RUN_DISPLAY_URL\"}\'"
+}
+
+def notify_chat (endpoint, color, verb, extras) {
+    branch = sh(returnStdout: true, script: "echo -n '${GITREF}' | sed 's@^refs/heads/@@'")
+    sh "curl -X POST -H 'Content-Type: application/json' --data \'{\"color\":\"${color}\",\"text\":\"${verb} **${branch}** ${RUN_DISPLAY_URL}\"${extras}}\' \'${endpoint}\'"
+}
+
+pipeline {
+    agent {
+        docker {
+            image 'reg.qa/insureio:latest'
+            /* The mount arg here mounts from Jenkins. (Doesn't work to mount an actual volume or host dir.) */
+            args '-v /var/insureio:/var/insureio -u root --privileged'
+            registryUrl 'https://reg.qa/'
+        }
+    }
+    environment {
+        // can't set PATH here and have the shell use it
+        rvm = '/usr/local/rvm/bin/rvm'
+        rvms = '/usr/local/rvm/bin/rvm-shell -c'
+        Path = "/usr/local/texlive/2020/bin/x86_64-linux:${env.PATH}"
+    }
+    stages {
+       stage('Pre-build') {
+            steps {
+                script {
+                    if (env.GITPUSHER) {
+                        withCredentials([string(credentialsId: 'chat-integration-endpoint', variable: 'endpoint')]) {
+                            notify_chat(endpoint, '#0000CC', 'begun', ",\"to\":\"$GITPUSHER\"")
+                        }
+                    }
+                }
+            }
+        }
+        stage('Build') {
+            // Be sure to set default shell to `bin/bash` in "Configure Jenkins"
+            steps {
+                /* Output some debugging info */
+                sh 'echo "git revision: ($GITREF) $GITBEFORE => $GITAFTER"' /* Set using Jenkins plugin "Generic Webhook Trigger" and a git webhook */
+                sh 'pwd'
+                sh "echo EXECUTOR_NUMBER ${EXECUTOR_NUMBER}"
+                sh 'echo HOME $HOME'
+                sh 'echo UID $UID'
+                sh '$rvms \'ruby -v\''
+                sh 'mysql --version'
+                /* Check for dependencies */
+                sh "PATH=$PATH which pdflatex" /* Using double quotes allows $PATH to be evaluated here in Jenkins instead of in `sh` */
+                sh '[[ -e .git ]] && git checkout . || true' /* Remove any previous changes, as from `rake underwriting` */
+                git credentialsId: 'jenkins-deploy', url: 'git@github.com:pic-development/Insureio.git'
+                sh 'git checkout $GITAFTER || git checkout $GITREF'
+                sh 'git rev-parse HEAD'
+                script {
+                    /* Make sure `git log` succeeds. (If it doesn't it would
+                    /* be responsible for a false flag in the `try` block
+                    /* below.) */
+                    sh "git log -1 --pretty='format:%B'"
+                    try {
+                        sh "! git log -1 --pretty='format:%B' | grep -q '^WIP'"
+                    } catch (err) {
+                        /* Abort pipeline if commit message indicates WIP */
+                        currentBuild.result = 'ABORTED'
+                        error('Stopping early because commit is WIP')
+                    }
+                }
+                /* Set status of commit on Github */
+                withCredentials([usernamePassword(credentialsId: 'github-status-token', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                    set_status "pending", user, pass
+                }
+                /* Add Compulife to hosts file for the sake of Protractor tests */
+                sh 'grep -q compulife.one /etc/hosts || base64 -d <<< NjYuMjI4LjUxLjI1MSBjb21wdWxpZmUub25lCg== >> /etc/hosts'
+                sh 'curl \'http://compulife.one/cgi-bin/cqsl.cgi?BirthMonth=3&BirthYear=1980&Birthday=17&DoHeightWeight=ON&DoNotKnowString=maybe&FaceAmount=750000&GoString=true&Health=PP&ModeUsed=M&NewCategory=1&Sex=M&Smoker=N&UserLocation=XML&X=M&State=ND&Feet=5&Inches=5&Weight=155\''
+                /* Ensure existence of config/database.yml (not kept in SCM) */
+                sh """
+                cat > config/database.yml <<-EOF
+                test:
+                  adapter: mysql2
+                  encoding: utf8
+                  reconnect: false
+                  database: test-${EXECUTOR_NUMBER}
+                  pool: 5
+                  username: root
+                  password:
+                  host: localhost
+
+                development:
+                  adapter: mysql2
+                  encoding: utf8
+                  reconnect: false
+                  database: dev-${EXECUTOR_NUMBER}
+                  pool: 5
+                  username: root
+                  password:
+                  host: localhost
+                EOF
+                """.stripIndent()
+                /* Ensure existence of secrets files (not kept in SCM) */
+                sh 'cp -r /var/insureio/shared/config/data_sensitive_or_machine_specific/* config/data_sensitive_or_machine_specific/'
+                sh '[[ -e config/data_sensitive_or_machine_specific/agency_works.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/apps.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/bullet.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/chat.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/config.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/docusign.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/docusign.yml.template ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/exam_one.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/passwd.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/passwd.yml.template ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/scor.yml ]]'
+                sh '[[ -e config/data_sensitive_or_machine_specific/stripe.yml ]]'
+                // Install JS libraries
+                sh 'npm install'
+                sh 'node_modules/bower/bin/bower install --allow-root'
+                sh 'mkdir -p vendor/assets/bower_components/jquery/dist'
+                sh 'ln vendor/assets/bower_components/jquery/jquery.js vendor/assets/bower_components/jquery/dist || true'
+                /* Install ruby gems */
+                sh '$rvms "bundle install --path=./gems --jobs=4"'
+                /* Run webdriver-manager update (in case no driver and browser is installed) */
+                sh 'node_modules/protractor/bin/webdriver-manager update --versions.chrome 80.0.3987.106 --versions.standalone 3.141.59 --versions.gecko v0.26.0'
+                /* Disable sandbox. (We're running as root) */
+                sh 'sed -i \'s@args: \\[ @args: ["--disable-dev-shm-usage", "--no-sandbox", @\' config/protractor.js'
+                /* Set host for protractor */
+                sh 'grep pinney.local.com /etc/hosts || echo \'127.0.0.1 pinney.local.com\' >> /etc/hosts'
+                sh 'grep nmb.local.com /etc/hosts || echo \'127.0.0.1 nmb.local.com\' >> /etc/hosts'
+                /* Build databases & auto-generated js for protractor tests */
+                run_mysqld()
+                sh '$rvms \'bundle exec rake db:clean db:seed:protractor underwriting:spec:protractor\''
+                sh 'RAILS_ENV=test $rvms \'bundle exec rake db:schema:load db:migrate db:fix db:seed\''
+            }
+        }
+        stage('Run tests') {
+            parallel {
+                stage('Rspec') {
+                    steps {
+                        /* Start mysql server in case this stage gets (re)run in isolation */
+                        run_mysqld()
+                        sh "PATH=$PATH $rvms 'bundle exec rspec \
+                        spec/models/consumer_spec.rb \
+                        spec/models/crm/health_info_spec.rb \
+                        spec/controllers/application_controller_spec.rb \
+                        spec/controllers/consumers_controller_spec.rb \
+                        spec/controllers/ixn_controller_spec.rb \
+                        spec/controllers/reporting/searches_controller_spec.rb \
+                        spec/controllers/quoting/quotes_controller_spec.rb \
+                        spec/controllers/quoting/widgets_controller_spec.rb \
+                        spec/controllers/rtt_controller_spec.rb:20 \
+                        spec/controllers/rtt_controller_spec.rb:30 \
+                        spec/lib/ \
+                        spec/models/processing/rtt/ \
+                        spec/models/owned_stereotype_spec.rb \
+                        spec/models/quoting/quote_spec.rb \
+                        spec/models/reporting/search_spec.rb \
+                        '"
+                    }
+                }
+                stage('Lint') {
+                    steps {
+                        run_mysqld()
+                        sh 'RAILS_ENV=test $rvms \'script/es5_compatibility_check.js\''
+                    }
+                }
+                stage('Karma + Jasmine') {
+                    steps {
+                        /* Start mysql server in case this stage gets (re)run in isolation */
+                        sh 'CHROME_BIN=$(node -e "console.log(require(\'puppeteer\').executablePath())") npm test'
+                    }
+                }
+                stage('Protractor') {
+                    steps {
+                        /* Remove pre-compiled js files because they may come from a different branch or commit */
+                        sh 'rm -f public/assets/*.js'
+                        /* Log version of webdriver-manager */
+                        sh 'node_modules/protractor/bin/webdriver-manager version'
+                        sh 'node_modules/protractor/bin/webdriver-manager status'
+                        /* Start mysql server in case this stage gets (re)run in isolation */
+                        run_mysqld()
+                        /* Kill the server if it's still running from a previous job.
+                        /* (May be unnecessary, but I've run into failures when I
+                        /* don't kill it.) */
+                        sh '[[ -e tmp/pids/server.pid ]] && ( ps -l -p $(cat tmp/pids/server.pid) && kill -9 $(cat tmp/pids/server.pid) ) || true'
+                        sh '[[ -e tmp/pids/server.pid ]] && rm tmp/pids/server.pid || true'
+                        /* Confirm expected values for user */
+                        sh "mysql dev-${EXECUTOR_NUMBER} -e \"select id, login, quoter_key, tenant_id, membership_id, crypted_password, password_salt, permissions_0, permissions_1, permissions_2, permissions_3, permissions_4 from users where login = 'grace' or id = 1\\G\""
+                        /* Start server in "development" because "test" will prevent
+                        /* any external web requests, such as the ones made to the
+                        /* Compulife quoter. Wait a while after starting the server so
+                        /* that it will be ready to receive requests when Protractor
+                        /* starts. */
+                        sh '$rvms \'bundle exec rails server -e development &\''
+                        sh 'for i in 1 2 3 4 5 6 7 8 9 0; do curl -s 127.0.0.1:3000 || sleep 2; done' /* Wait for rails server */
+                        sh 'npm run protractor'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            withCredentials([usernamePassword(credentialsId: 'github-status-token', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                set_status "success", user, pass
+            }
+            withCredentials([string(credentialsId: 'chat-integration-endpoint', variable: 'endpoint')]) {
+                notify_chat(endpoint, '#00CC00', ':green_heart: passed', '')
+            }
+            sh 'echo success'
+        }
+        failure {
+            withCredentials([usernamePassword(credentialsId: 'github-status-token', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                set_status "failure", user, pass
+            }
+            withCredentials([string(credentialsId: 'chat-integration-endpoint', variable: 'endpoint')]) {
+                notify_chat(endpoint, '#CC0000', ':cold_face: failed', '')
+            }
+            sh 'echo failure'
+        }
+    }
+}
