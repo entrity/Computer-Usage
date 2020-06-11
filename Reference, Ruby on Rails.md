@@ -13,6 +13,7 @@ Other "mail interceptors" exist.
 - Grape API - api framework
 - factory_bot - build/create model instances for test/dev
 - mini_record - allows for automatic migrations (no db migrations files)
+- lograge & lograge-sql - create excellent logs
 - Pry, rails-pry - debugger
 - Redis - pub/sub
 - Rubocop - Enforces style, lints ruby code
