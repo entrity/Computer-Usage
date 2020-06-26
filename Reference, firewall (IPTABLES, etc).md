@@ -1,5 +1,20 @@
 ## IPTBALES
 
+#### Quick: unblock everything
+
+```bash
+sudo iptables-save > /tmp/iptables.txt # save existing config in case a restore is needed
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -t nat -F
+sudo iptables -t mangle -F
+sudo iptables -F
+sudo iptables -X
+```
+
+#### Configure
+
 ```bash
 # List existing rules
 iptables -L
