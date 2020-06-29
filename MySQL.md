@@ -16,3 +16,16 @@ Importing sql dumps is super slow.
 ## Smaller, faster indices
 
 For other sql DBMS (PostgreSQL, SQL, etc) but not this (MySQL, MariaDB), you can create a partial index, which eliminates some data from the index, having it be implied because all rows in the partial index already match a `WHERE ...` clause.
+
+## Troubleshoot sleeping connections
+
+### Kill the connections
+
+```bash
+"${MYSQL_CMD[@]}" -e 'show full processlist' | while read -r Id User Host db Command Time State Info Progress; do
+	if [[ $Command == Sleep ]] && [[ $Time -gt 150 ]]; then # $Time is in seconds
+		"${MYSQL_CMD[@]}" -e "kill $Id"
+		echo -e "$Id\t$User\t$Host\t$db\t$Command\t$Time\t$State\t$Info\t$Progress"
+	fi
+done
+```
