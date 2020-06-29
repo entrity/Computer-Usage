@@ -21,3 +21,9 @@ zadd KEY SCORE MEMBER [SCORE MEMBER...]
 # Strings
 get KEY
 ```
+
+## Investigating, troubleshooting
+
+```bash
+redis-cli monitor # Good for sidekiq queue activity
+```
