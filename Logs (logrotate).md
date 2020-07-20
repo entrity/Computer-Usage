@@ -19,3 +19,25 @@ e.g.
   dateformat .%Y%m%d
 }
 ```
+
+Commands:
+```bash
+# Dry run (verbose)
+logrotate -d $config_file
+# Manually run (verbose)
+logrotate -v $config_file
+```
+
+### Negative match
+
+A nice hack for a negative match is to include a script in the config, which will run in `sh`, e.g.:
+
+```
+...
+nosharedscripts
+prerotate
+  ! grep -q pattern <<< "$1"
+endscript
+...
+```
+
