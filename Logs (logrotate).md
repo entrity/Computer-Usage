@@ -30,7 +30,7 @@ logrotate -v $config_file
 
 ### Negative match
 
-A nice hack for a negative match is to include a script in the config, which will run in `sh`, e.g.:
+A nice hack for a negative match is to include a script in the config, which will run in `sh` and exit with an error status for the conditions of your choosing. The first argument to the script is the absolute path of the logfile. E.g.:
 
 ```
 ...
