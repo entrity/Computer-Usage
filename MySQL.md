@@ -7,6 +7,7 @@ show full processlist;
 select user,host from mysql.user;
 grant all on *.* to user 'foo'@'host';
 select * from table into outfile 'file.tmp';
+SELECT table_schema AS "Database", ROUND(SUM(data_length + index_length) / 1024 / 1024 / 1024, 2) AS "Size (GB)" FROM information_schema.tables;
 ```
 
 ## Binlogs
