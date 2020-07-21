@@ -1,5 +1,20 @@
 # MySQL
 
+## Handy commands
+
+```sql
+show full processlist;
+select user,host from mysql.user;
+grant all on *.* to user 'foo'@'host';
+select * from table into outfile 'file.tmp';
+```
+
+## Binlogs
+
+```sh
+mysqlbinlog $logfile
+```
+
 ## Start a new server instance, configured for faster db import
 
 See [example](https://github.com/entrity/Computer-Usage/blob/master/examples/mysqld-new-instance.sh)
