@@ -2,7 +2,7 @@
 ```bash
 docker ps # Show containers
 docker image ls
-docker commit $CONTAINER [$TAG] # Take a snapshot of the container
+docker commit $CONTAINER $NAME[:$TAG] # Take a snapshot of the container
 docker run -it $IMAGE bash
 docker exec -it $CONTAINER bash
 # Clean up exited containers
