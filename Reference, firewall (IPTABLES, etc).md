@@ -27,7 +27,9 @@ iptables-restore -t iptables.txt
 ```bash
 # List existing rules
 iptables -L
+```
 
+```bash
 # Drop/reject connections by default
 iptables --policy INPUT DROP # Don't send back an error s.t. the source doesn't see the system exists
 iptables --policy OUTPUT REJECT # No need to occlude with DROP if the user is already inside the system
@@ -39,6 +41,20 @@ iptables -A OUTPUT -m state --state ESTABLISHED -j ACCEPT
 
 # Insert a rule (because matches are searched in list order)
 iptables -I INPUT 3 -p tcp --dport 8000 -j ACCEPT # Set the number after the chain name
+
+# Flush changes
+iptables -F [CHAIN]
+```
+
+```bash
+# Delete by chain and line number
+iptables -L --line-numbers
+iptables -D INPUT 3
+# Delete by specification
+iptables -D INPUT -m conntrack --ctstate INVALID -j DROP
+
+# Flush changes
+iptables -F [CHAIN]
 ```
 
 The changes that you make to your iptables rules will be scrapped the next time that the iptables service gets restarted unless you execute a command to save the changes.  This command can differ depending on your distribution:
