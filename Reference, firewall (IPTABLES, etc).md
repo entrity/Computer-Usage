@@ -16,6 +16,15 @@ sudo iptables -X
 #### Configure
 
 ```bash
+# Save existing rules
+iptables-save > iptables.txt
+# Restore rules from dump file (with flush)
+iptables-restore iptables.txt
+# Parse the dump file but do not commit it
+iptables-restore -t iptables.txt
+```
+
+```bash
 # List existing rules
 iptables -L
 
