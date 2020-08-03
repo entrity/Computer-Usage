@@ -33,9 +33,11 @@ Importing sql dumps is super slow.
 
 For other sql DBMS (PostgreSQL, SQL, etc) but not this (MySQL, MariaDB), you can create a partial index, which eliminates some data from the index, having it be implied because all rows in the partial index already match a `WHERE ...` clause.
 
-## Troubleshoot sleeping connections
+## Troubleshooting 
 
-### Kill the connections
+### Sleeping connections
+
+#### Kill the connections
 
 ```bash
 "${MYSQL_CMD[@]}" -e 'show full processlist' | while read -r Id User Host db Command Time State Info Progress; do
@@ -45,3 +47,7 @@ For other sql DBMS (PostgreSQL, SQL, etc) but not this (MySQL, MariaDB), you can
 	fi
 done
 ```
+
+### `MySQL : Error Dropping Database (Can’t rmdir ‘.test\’, errno: 17)`
+
+Root Cause: The `DROP DATABASE` statement will remove all table files and then remove the directory that represented the database. It will not, however, remove non-table files, whereby making it not possible to remove the directory. So you need to remove those manually.
