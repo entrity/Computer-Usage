@@ -51,3 +51,32 @@ done
 ### `MySQL : Error Dropping Database (Can’t rmdir ‘.test\’, errno: 17)`
 
 Root Cause: The `DROP DATABASE` statement will remove all table files and then remove the directory that represented the database. It will not, however, remove non-table files, whereby making it not possible to remove the directory. So you need to remove those manually.
+
+
+## Master - Slave Replication
+
+```sql
+-- on master
+show master status;
+```
+On slave:
+```sql
+-- Start the replica, using the --skip-slave-start option so that replication does not start.
+CHANGE MASTER TO
+    ->     MASTER_HOST='source_host_name',
+    ->     MASTER_USER='replication_user_name',
+    ->     MASTER_PASSWORD='replication_password',
+    ->     MASTER_LOG_FILE='recorded_log_file_name',
+    ->     MASTER_LOG_POS=recorded_log_position;
+show slave status;
+START SLAVE;
+```
+
+On slave config:
+```
+Replicate_do_db = <db name>
+```
+if you want to replicate multiple databases, you will have to specify the above option multiple times.
+
+- https://dev.mysql.com/doc/refman/5.6/en/replication-howto-existingdata.html
+- https://dev.mysql.com/doc/refman/5.7/en/replication-options-replica.html#option_mysqld_replicate-wild-do-table
