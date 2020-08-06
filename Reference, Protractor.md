@@ -4,7 +4,7 @@
 
 ### `browser.sleep(...)`
 
-Use `browser.sleep(milliseconds)` to have the browser stop at a point so that you can open DevTools and fiddle around or click buttons. But this absolutely _WILL NOT_ pause if you put in a number that is _too large_. I find it works with `2**23` but not with `2**33`. You probably need to set `jasmine.DEFAULT_TIMEOUT_INTERVAL` likewise.
+Use `browser.sleep(milliseconds)` to have the browser stop at a point so that you can open DevTools and fiddle around or click buttons. But this absolutely _WILL NOT_ pause if you put in a number that is _too large_. I find it works with `2**23` but not with `2**33`. (I hope the cutoff is `2**32-1` or `2**31-1` so that there is some logic at play.) You probably need to set `jasmine.DEFAULT_TIMEOUT_INTERVAL` likewise.
 
 ```js
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 2**22;
