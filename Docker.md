@@ -9,6 +9,16 @@ docker exec -it $CONTAINER bash
 docker ps -a -f status=exited | cut -d\  -f1 | grep -v CONTAINER | xargs docker rm
 ```
 
+### Registries
+
+```bash
+# Pull from registry
+docker pull reg/image:tag
+# Push to private registry
+docker tag image:tag reg/image:tag
+docker push reg/image:tag
+```
+
 ## Running GUI programs on Docker
 See http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 
