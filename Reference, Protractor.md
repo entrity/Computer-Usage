@@ -1,5 +1,11 @@
 # Protractor
 
+## Command line options
+
+```bash
+protractor config.js --specs spec/my_spec.js --capabilities.chromeOptions.args "window-size=1920,1080"
+```
+
 ## Troubleshooting
 
 ### `browser.sleep(...)`
