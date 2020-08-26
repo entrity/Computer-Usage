@@ -64,3 +64,15 @@ Run your rails server in development, not test environment. (Probably your Rails
 
 * #### Quote requests always return nothing
 Requests to Compulife might return nothing if your application is referencing Complife by a domain, such as `compulife.one`. We have to run Compulife as a web application on one of our own servers. You should make sure your `/etc/hosts` file supplies an IP address for that domain.
+
+
+* #### Failed: Error while running testForAngular: script timeout
+
+Increase the timeout in your project's protractor config file:
+```js
+exports.config = {
+    // ... 
+    getPageTimeout: 4*60*1000, // Increase default timeout
+    allScriptsTimeout: 6*60*1000, // Increase default timeout
+}
+```
