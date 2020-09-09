@@ -3,8 +3,14 @@
 ## Command line options
 
 ```bash
-protractor config.js --specs spec/my_spec.js --capabilities.chromeOptions.args "window-size=1920,1080"
+protractor config.js \
+  --specs spec/my_spec.js \
+  --capabilities.chromeOptions.args="window-size=1920,1080" \
+  --params.cookiesFile=myfile \
+  --baseUrl="https://example.com"
 ```
+
+It looks like the `=` is _not_ optional on at least some of the params.
 
 ## Troubleshooting
 
