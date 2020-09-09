@@ -6,11 +6,16 @@
 protractor config.js \
   --specs spec/my_spec.js \
   --capabilities.chromeOptions.args="window-size=1920,1080" \
+  --capabilities.chromeOptions.args="headless" \
+  --capabilities.chromeOptions.args="disable-gpu" \
+  --capabilities.chromeOptions.args="host-resolver-rules='MAP * 192.168.0.115'" \
   --params.cookiesFile=myfile \
   --baseUrl="https://example.com"
 ```
 
 It looks like the `=` is _not_ optional on at least some of the params.
+
+You can specify `capabilities.chromeOptions.args` more than once in order to specify multiple args.
 
 ## Troubleshooting
 
