@@ -60,6 +60,12 @@ HOSTS=66.228.51.251:4000 bundle exec cap production deploy
 
 I've had a few problems with bundler, particularly when using rvm. _NB:_ if your app needs a particular version of bundler and you have one in a global/default gemset that is somehow interfering, it's insufficient to remove bundler using the usual commands. (I don't remember the right things to do, maybe `rvm gemset use global`, then uninstall 1.1.3 from global. You may need to downgrade rubygems too: `gem update --system 2.7.6`.)
 
+### Run specific version of bundler
+
+```bash
+bundle _1.17.3_ -v # Bundler version 1.17.3
+```
+
 ### "Could not fetch specs from http://rubygems.org/"
 If bundler complains that it can't access rubygems.org, disable IPv6:
 ```bash
