@@ -17,6 +17,7 @@ docker pull reg/image:tag
 # Push to private registry
 docker tag image:tag reg/image:tag
 docker push reg/image:tag
+# NB: after pushing a change to the registry, enter Jenkins and pull that change (if using Jenkins)!
 ```
 
 ## Running GUI programs on Docker
