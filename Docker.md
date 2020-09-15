@@ -2,7 +2,7 @@
 ```bash
 docker ps # Show containers
 docker image ls
-docker commit $CONTAINER $NAME[:$TAG] # Take a snapshot of the container
+docker commit $CONTAINER $NAME[:$TAG] # Save a snapshot of the container
 docker run -it $IMAGE bash
 docker exec -it $CONTAINER bash
 # Clean up exited containers
@@ -33,7 +33,7 @@ See http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
 ## Installing Docker without root
 Not possible, as far as I know: https://stackoverflow.com/a/48474153/507721
 
-## [Launch container](https://docs.docker.com/engine/reference/commandline/run/)
+## Launch container [doc](https://docs.docker.com/engine/reference/commandline/run/)
 ```bash
 # docker run -it -v <mount-share> <image> <command>
 # -i is 'interactive'
@@ -44,7 +44,7 @@ docker run -it -v /sharedfolder:/root/sharedfolder ufoym/deepo bash
 nvidia-docker run -it -v /sharedfolder:/root/sharedfolder ufoym/deepo bash
 ```
 
-## [Commit image changes](https://docs.docker.com/engine/reference/commandline/commit/)
+## Commit image changes [doc](https://docs.docker.com/engine/reference/commandline/commit/)
 
 After installing something new, you can easily commit your current images so that you can freely share with others or launch it again.
 ```bash
