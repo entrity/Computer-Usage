@@ -8,3 +8,19 @@
     * `ss -a` show all (listening and receiving)
     * `ss -l` show listening
     * `ss -p` show the pid
+
+
+### iftop
+
+#### Installation on CentOS 7
+
+```bash
+# First install epel repository
+yum install epel-release
+# Then modify /etc/yum.repos.d/epel.repo and /etc/yum.repos.d/epel-testing.repo
+# uncommenting `baseurl=` lines and commenting `metalink=` lines
+...
+yum update
+# Then install iftop
+yum install iftop
+```
