@@ -80,3 +80,7 @@ if you want to replicate multiple databases, you will have to specify the above 
 
 - https://dev.mysql.com/doc/refman/5.6/en/replication-howto-existingdata.html
 - https://dev.mysql.com/doc/refman/5.7/en/replication-options-replica.html#option_mysqld_replicate-wild-do-table
+
+## Performance Tuning
+
+https://www.mysql.com/why-mysql/presentations/mysql-performance-tuning101/
