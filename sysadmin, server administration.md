@@ -28,3 +28,9 @@ yum update
 # Then install iftop
 yum install iftop
 ```
+
+## Troubleshooting
+
+> No route to host
+
+Could be a firewall issue. Check `firewall-cmd` and `iptables`.

@@ -28,6 +28,38 @@ Ruby environment managers:
 - rbenv
 - rvm
 
+### Rbenv
+
+#### System install [ref](https://blakewilliams.me/posts/system-wide-rbenv-install).
+
+```bash
+cd /usr/local
+git clone git://github.com/sstephenson/rbenv.git rbenv
+chgrp -R staff rbenv
+chmod -R g+rwxXs rbenv
+# Install ruby-build (a tool for installing rubies into rbenv)
+cd /usr/local/rbenv
+mkdir plugins
+cd plugins
+git clone git://github.com/sstephenson/ruby-build.git
+chgrp -R staff ruby-build
+chmod -R g+rwxs ruby-build
+# Add system vars
+cat <<-EOF > /etc/profile.d/rbenv.sh
+export RBENV_ROOT=/usr/local/rbenv
+export PATH="\$RBENV_ROOT/bin:\$PATH"
+eval "\$(rbenv init -)"
+EOF
+```
+
+```bash
+rbenv versions
+rbenv version
+rbenv install 2.6.6
+rbenv shell [2.3.0] # Get/set current shell's ruby
+rbenv local [2.7.1] # Get/set current dir's ruby
+```
+
 ## Arel
 
 ### Update

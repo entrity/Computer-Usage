@@ -4,9 +4,12 @@ Install as a service to block attackers trying to hit your ssh server.
 
 ```bash
 # Centos 7
-yum install fail2ban
+yum install epel-release
+yum install fail2ban fail2ban-systemd
+yum update selinux-policy*
 systemctl start fail2ban
 systemctl enable fail2ban
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 ```
 
 Then modify `/etc/fail2ban/jail.local`: Look for `[sshd]` and set `enabled`
