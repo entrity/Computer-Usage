@@ -98,6 +98,12 @@ I've had a few problems with bundler, particularly when using rvm. _NB:_ if your
 bundle _1.17.3_ -v # Bundler version 1.17.3
 ```
 
+### Uninstall specific version of undler
+`gem` may not remove your global bundler installation.
+```bash
+gem uninstall -i /usr/local/rvm/gems/ruby-2.3.0@global bundler -v 2.1.4
+```
+
 ### "Could not fetch specs from http://rubygems.org/"
 If bundler complains that it can't access rubygems.org, disable IPv6:
 ```bash
