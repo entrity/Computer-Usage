@@ -13,8 +13,23 @@
     * `ss -l` show listening
     * `ss -p` show the pid
 
-
 ### iftop
+Show io. Useful for debugging network traffic.
+
+### pstree
+* `-p` show pids
+* `-s` show parents/ancestors
+
+### strace
+Show system calls. (Use `dtruss` instead for MacOSX.)
+
+* `-c` aggregate data for each type of syscall
+* `-e ...` use an expression to filter traces or change how they are done
+* `-f` include child processes
+* `-o $OUT` write output to file
+* `-p $PID` attach to a currently running process
+* `-T` include a column showing the time for each syscall
+* `-s $LEN` set length of output (default 32)
 
 #### Installation on CentOS 7
 
