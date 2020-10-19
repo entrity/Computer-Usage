@@ -2,16 +2,16 @@
 
 ## Overview
 
-* [`fail2ban`](https://github.com/entrity/Computer-Usage/blob/master/Reference%2C%20fail2ban.md) - Block IP's launching ssh brute-force attacks
+* `fail2ban` block IP's launching ssh brute-force attacks
 * `iftop` examine network traffic (e.g. `iftop -P -N -f "not port 80"`)
-* `sar` see logs of cpu, ram, i/o for the day [ref](https://www.redhat.com/sysadmin/troubleshooting-slow-servers)
-    * `sar` show cpu
-    * `sar -r` show ram
-    * `sar -d` show disk i/o 
+* `ngrep` network grep
+* `sar` see logs of cpu, ram, i/o for the day
 * `ss` dump socket statistics (similar to `netstat`)
-    * `ss -a` show all (listening and receiving)
-    * `ss -l` show listening
-    * `ss -p` show the pid
+* `tcpdump`
+
+### fail2ban
+Block IP's launching ssh brute-force attacks
+[ref](https://github.com/entrity/Computer-Usage/blob/master/Reference%2C%20fail2ban.md)
 
 ### iftop
 Show io. Useful for debugging network traffic.
@@ -19,6 +19,20 @@ Show io. Useful for debugging network traffic.
 ### pstree
 * `-p` show pids
 * `-s` show parents/ancestors
+
+### sar
+See logs of cpu, ram, i/o for the day [ref](https://www.redhat.com/sysadmin/troubleshooting-slow-servers)
+
+* `sar` show cpu
+* `sar -r` show ram
+* `sar -d` show disk i/o
+
+## ss
+Dump socket statistics (similar to `netstat`)
+
+* `ss -a` show all (listening and receiving)
+* `ss -l` show listening
+* `ss -p` show the pid
 
 ### strace
 Show system calls. (Use `dtruss` instead for MacOSX.)
@@ -30,6 +44,13 @@ Show system calls. (Use `dtruss` instead for MacOSX.)
 * `-p $PID` attach to a currently running process
 * `-T` include a column showing the time for each syscall
 * `-s $LEN` set length of output (default 32)
+
+### tcpdump
+
+E.g.
+```bash
+sudo tcpdump -i eth0 host 192.168.132.150 and port 80 or port 443 -A
+```
 
 #### Installation on CentOS 7
 
