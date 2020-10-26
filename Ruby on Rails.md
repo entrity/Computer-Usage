@@ -110,3 +110,18 @@ If bundler complains that it can't access rubygems.org, disable IPv6:
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 # This was actually unnecssary for me; the previous command changed this value too.
 ```
+
+## Authlogic
+
+This is a popular authentication module.
+
+Trying to use it from the console or rspec results in a complaint `Authlogic::Session::Activation::NotActivatedError: You must activate the Authlogic::Session::Base.controller with a controller object before creating objects`.
+
+You can mock the base controller and use it as follows:
+
+```ruby
+request = OpenStruct.new ip: '0.0.0.0'
+UserSession.controller = OpenStruct.new request: request, cookies: {}, session: {}
+sess = UserSesssion.new({:login=>"nmb", :password=>"<protected>"})
+sess.save
+```
