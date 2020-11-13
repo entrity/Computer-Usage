@@ -3,9 +3,10 @@
 ## Encrypting/Decrypting
 
 ```bash
-# Encrypt a file.
-# If you don't enter a RECIPIENT, you will be prompted to enter one or more.
+# Encrypt a file. If you don't enter a RECIPIENT, you will be prompted to enter one or more.
 gpg -e [-r RECIPIENT] FILE
+# Encrypt a file using a passphrase
+gpg -c # Alias gpg --symmetric
 ```
 
 ## Key management
