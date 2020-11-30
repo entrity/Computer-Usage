@@ -4,6 +4,7 @@
 
 * `fail2ban` block IP's launching ssh brute-force attacks
 * `iftop` examine network traffic (e.g. `iftop -P -N -f "not port 80"`)
+* `iostat` examine "cpu steal" and others
 * `ngrep` network grep
 * `sar` see logs of cpu, ram, i/o for the day
 * `ss` dump socket statistics (similar to `netstat`)
@@ -15,6 +16,13 @@ Block IP's launching ssh brute-force attacks
 
 ### iftop
 Show io. Useful for debugging network traffic.
+
+### iostat
+Show cpu steal and others. [CPU steal](https://www.linode.com/community/questions/18168/what-is-cpu-steal-and-how-does-it-affect-my-linode) is the percentage of time that a virtual CPU has to wait for the physical CPU while the hypervisor is fulfilling processes from another virtual CPU. In short, CPU steal occurs when a VM's shared CPU core is delayed in processing a request. This typically occurs when there is resource contention occurring, but that is not always the case.
+
+* `iostat 1 10` run `iostat` every `1` seconds for `10` iterations
+
+NB: Linode considers spikes in CPU steal values less than 10-15% to be within an acceptable range in a virtualized environment.
 
 ### pstree
 * `-p` show pids
