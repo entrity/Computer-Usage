@@ -29,7 +29,9 @@ NB: Linode considers spikes in CPU steal values less than 10-15% to be within an
 * `-s` show parents/ancestors
 
 ### sar
-See logs of cpu, ram, i/o for the day [ref](https://www.redhat.com/sysadmin/troubleshooting-slow-servers)
+See logs of cpu, ram, i/o for the day [ref](https://www.redhat.com/sysadmin/troubleshooting-slow-servers) [ref2](https://www.tothenew.com/blog/install-and-configure-sar-on-ubuntu/)
+
+`sudo apt install sysstat # Then edit /etc/default/sysstat`
 
 * `sar` show cpu
 * `sar -r` show ram
