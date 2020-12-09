@@ -33,3 +33,13 @@ gpg --export-secret-key -a ID > private.key
 # Import a key
 gpg --import public.key
 ```
+
+### Create, delete
+```bash
+# Create key
+gpg --gen-key
+# Delete public key
+gpg --delete-key ID
+# Delete secret key
+gpg --delete-secret-key ID
+```

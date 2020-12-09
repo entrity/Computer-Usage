@@ -77,9 +77,36 @@ On slave config:
 Replicate_do_db = <db name>
 ```
 if you want to replicate multiple databases, you will have to specify the above option multiple times.
-
-- https://dev.mysql.com/doc/refman/5.6/en/replication-howto-existingdata.html
 - https://dev.mysql.com/doc/refman/5.7/en/replication-options-replica.html#option_mysqld_replicate-wild-do-table
+
+### Getting initial dump from master
+https://dev.mysql.com/doc/refman/5.6/en/replication-howto-existingdata.html
+
+```bash
+# See ~/deploy/db-dump.sh on the slave server
+HOST=dataraptor-db
+USER=copy
+DBPASS=
+ROOTPW=
+TIMESTAMP=`date +%Y-%m-%d`
+DUMPFILE=$HOME/dump-$TIMESTAMP.sql
+# Check permissions on master
+mysql -h $HOST -P 5000 -u $USER -p$DBPASS -e 'show grants for "copy"' || exit 1
+mysql -h $HOST -P 5000 -u $USER -p$DBPASS -e 'show grants for "copy"' | grep -P 'INSERT|CREATE|UPDATE|DELETE|DROP|RELOAD|SHUTDOWN|FILE|ALTER|INDEX|EXECUTE|SUPER|GRANT' || exit 2
+# Create the dump file
+mysqldump -h $HOST -P 5000 -u $USER -p$DBPASS \
+  --master-data=1 --compact --compress --create-options --extended-insert \
+  --quick --single-transaction \
+  --databases dataraptor_production > "$DUMPFILE" || exit 1
+# Drop previous databases (if any)
+<<-SQL_EOF | mysql -h 127.0.0.1 -P 5000 -u root -p$ROOTPW
+  DROP DATABASE dataraptor_production;
+  DROP DATABASE dataraptor_copy;
+  DROP DATABASE clone_dr_prod;
+SQL_EOF
+# Load the dump file
+mysql -h 127.0.0.1 -P 5000 -u root -p$ROOTPW < "$DUMPFILE"
+```
 
 ## Performance Tuning
 
