@@ -1,5 +1,27 @@
 # Mail Reference
 
+## Mailx
+```bash
+echo "this is the body" | mailx -s "subject line" recipient@host.com
+```
+### `~/.mailrc`
+```
+set smtp-use-starttls
+set ssl-verify=ignore
+set smtp=smtp://smtp.office365.com:587
+set smtp-auth=login
+set smtp-auth-user=[EMAIL_ADDR]
+set smtp-auth-password=[EMAIL_PASS]
+set nss-config-dir=/etc/pki/nssdb/
+set from=[EMAIL_ADDR]
+```
+...yes, you need to specify `from`, either in a config file or on the command line.
+
+For redhat distros, include:
+```
+set nss-config-dir=/etc/pki/nssdb/
+```
+
 ## Postfix
 
 ### Trigger executable
