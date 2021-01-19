@@ -12,7 +12,8 @@ sed "${i},\$d" # Delete lines i - EOF
 ######
 # Print range of lines BY PATTERN
 ######
-sed -n "/START_PATTERN/,/END_PATTERN/p" # Use // for END_PATTERN to mean EOF
+sed -n "/START_PATTERN/,/END_PATTERN/p" # (inclusive) Use // for END_PATTERN to mean EOF
+sed -n '/START_PATTERN/,/END_PATTERN/{//!p;}' # (exclusive)
 sed "/END_PATTERN/q"
 sed -n '/BEGIN_PATTERN/,$p' # (inclusive)
 sed -n '1,/BEGIN_PATTERN/d' # (exclusive)
