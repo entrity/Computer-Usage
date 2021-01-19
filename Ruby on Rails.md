@@ -29,6 +29,10 @@ Ruby environment managers:
 - rvm
 
 ### Rbenv
+Be sure to have dependencies installed installed first:
+```bash
+apt install libssl-dev make gcc zlib1g-dev
+```
 
 #### System install [ref](https://blakewilliams.me/posts/system-wide-rbenv-install).
 
@@ -55,7 +59,7 @@ EOF
 ```bash
 rbenv versions
 rbenv version
-rbenv install 2.6.6
+export CC=gcc rbenv install 2.6.6
 rbenv shell [2.3.0] # Get/set current shell's ruby
 rbenv local [2.7.1] # Get/set current dir's ruby
 ```
