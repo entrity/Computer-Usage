@@ -17,7 +17,7 @@ sudo iptables -X
 
 ```bash
 # Save existing rules
-iptables-save > iptables.txt
+iptables-save > iptables-`date -I`.txt
 # Restore rules from dump file (with flush)
 iptables-restore iptables.txt
 # Parse the dump file but do not commit it
@@ -38,6 +38,8 @@ iptables --policy FORWARD DROP # Forwarding is a chain for routing (not INPUT or
 # Open a port for any connection
 iptables -A INPUT -p tcp --dport 8000 -j ACCEPT
 iptables -A OUTPUT -m state --state ESTABLISHED -j ACCEPT
+# Open all ports for source IP
+iptables -A INPUT -p tcp -s 10.0.0.1 -j ACCEPT
 
 # Insert a rule (because matches are searched in list order)
 iptables -I INPUT 3 -p tcp --dport 8000 -j ACCEPT # Set the number after the chain name

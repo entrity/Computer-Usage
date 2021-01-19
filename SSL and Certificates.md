@@ -1,11 +1,14 @@
+# SSL & Certificates
+
+## Quick commands
 ```bash
+# Command-line raw https connection
 openssl s_client -showcerts -connect the-server:443
+# Verify a certificate chain
+openssl verify -verbose -x509_strict -CAfile ca.pem cert_chain.pem
+# ?
+trust list # ?
 ```
-
-```bash
-trust list
-```
-
 
 ## Certbot & letsencrypt.org
 
@@ -27,7 +30,7 @@ sudo certbot --apache
 
 
 ## Getting Chrome/Chromium to trust your cert
-You need to import a CA cert (not an SSL cert). You need to use that CA cert to sign your SSL cert (which you will then use in your HTTPS server).
+You need to import a CA cert (not an SSL cert) into Chrome. You need to use that CA cert to sign your SSL cert (which you will then use in your HTTPS server).
 
 ```bash
 NAME=reg.qa
