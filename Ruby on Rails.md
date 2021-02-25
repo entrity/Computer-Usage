@@ -31,7 +31,11 @@ Ruby environment managers:
 ### Rbenv
 Be sure to have dependencies installed installed first:
 ```bash
-apt install libssl-dev make gcc zlib1g-dev
+apt install -y libssl-dev make gcc zlib1g-dev
+```
+For older rubies, such as 2.3.8:
+```bash
+apt install -y libreadline-dev
 ```
 
 #### System install [ref](https://blakewilliams.me/posts/system-wide-rbenv-install).
