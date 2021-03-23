@@ -27,22 +27,54 @@ import com.pdftron.sdf.Obj;
 
 class PdfWorker  {
   def run (inpath: String): Unit = {
-    PDFNet.initialize();
-    var doc = new PDFDoc(inpath)
-    var fdf = doc.fdfExtract()
-    var fiter = fdf.getFieldIterator
+     PDFNet.initialize();
+    printf("infile %s\n", infile.getAbsolutePath)
 
-    while (fiter.hasNext) {
-      var field = fiter.next
-      var obj = field.findAttribute("T")
-      if (obj != null && obj.isString() && obj.getAsPDFText().startsWith("ICC")) {
-          obj.setString("Barfdsay");
-          println("%d %s\t%s".format(obj.getType, obj.getAsPDFText(), field.getName));
+    var doc = new PDFDoc(infile.getAbsolutePath)
+    // doc.initSecurityHandler(); // makes value not appear until textfield is clicked
+    /* For images cf. https://www.pdftron.com/documentation/samples/java/AddImageTest */
+    var builder = new ElementBuilder
+    var writer = new ElementWriter
+    writer.begin(doc.getPage(1))
+    var img :Image = null
+    var element :Element = null
+    /* Add JPG */
+    img = Image.create(doc.getSDFDoc(), "Pictures/rot.jpg")
+    element = builder.createImage(img, 50, 200, 400, 400);
+    var sdfObj :com.pdftron.sdf.Obj = element.getXObject
+    sdfObj.putString("T", "mimg title")
+    writer.writePlacedElement(element)
+    /* Add PNG */
+    img = Image.create(doc.getSDFDoc(), "Pictures/screenshot.png")
+    element = builder.createImage(img, 100, 100, 300, 500)
+    element.getXObject.putString("T", "pngtitle")
+    writer.writePlacedElement(element)
+    writer.end()
+
+    /* For inputs, cf. InteractiveFormsTest.java*/
+    var iter = doc.getFieldIterator
+    while (iter.hasNext) {
+      var field = iter.next
+      if (field.getType == Field.e_text) {
+        field.rename("ice cream")
+        var obj = field.getSDFObj.findObj("V")
+        println("got text")
+        field.setValue("hooray for tons of choco")
+      } else if (field.getType == Field.e_check) {
+        field.rename("choco chips")
+        println("got check")
+        field.setValue("Yes")
+      } else {
+        printf("got %s\n", field.getType)
       }
     }
-    var outs = new FileOutputStream("pout.pdf")
-    doc.save(outs, {SDFDoc.SaveMode.INCREMENTAL}, null, 0)
-    outs.close
+
+
+    doc.save(new FileOutputStream("out.pdf"), SDFDoc.SaveMode.NO_FLAGS, null);
+
+    println("saved")
+    doc.close
+    PDFNet.terminate();
   }
 }
 ```

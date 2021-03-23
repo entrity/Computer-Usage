@@ -31,7 +31,7 @@ contents={%
 
 ### Fillable forms
 Cf. https://tex.stackexchange.com/questions/14842/creating-fillable-pdfs
-Cf. http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/hyperref/doc/manual.html
+Cf. https://ctan.org/pkg/hyperref?lang=en
 <details><summary>Example .tex</summary>
 
 ```latex
@@ -56,6 +56,10 @@ Cf. http://mirrors.ibiblio.org/CTAN/macros/latex/contrib/hyperref/doc/manual.htm
 ```
 </details>
 
+## Installing additional packages
+```bash
+tlmgr install media9 # Here the package name is media9
+```
 
 ## Setup
 
@@ -112,6 +116,10 @@ if ! [[ $PATH =~ ~/.texlive/2020/bin/x86_64-linux ]]; then
 fi
 ```
 </details>
+
+## Notable packages
+* `media9` - includes `pdfbase`, which grants driver-independent access to low-level pdf features
+* `pifont` - grants `\ding{n}` (dingbats) and other font directives
 
 ### Troubleshooting
 <details><summary>Problems & Solutions</summary>
