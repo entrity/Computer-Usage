@@ -12,6 +12,11 @@ Check your `/etc/resolv.conf`. Is the first entry `nameserver 127.0.0.53`? If no
 
 If all else fails, restart the computer.
 
+  In insureio, this error also shows up as:
+  * Unable to send to recipient ...  Seahorse::Client::NetworkingError Failed ...
+  * expected: "Dispatched emails to 1 of 2 recipients."
+         got: "Dispatched emails to 0 of 2 recipients."
+
 ----
 ## ArgumentError: must specify a key
 
