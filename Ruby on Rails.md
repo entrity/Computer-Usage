@@ -38,6 +38,13 @@ For older rubies, such as 2.3.8:
 apt install -y libreadline-dev
 ```
 
+## Timezones and times
+```ruby
+Time.zone # Get configured default timezone
+Time.now.getlocal.zone # Get system timezone
+DateTime.now.in_time_zone('Eastern Time (US & Canada)') # Convert time to timezone
+```
+
 #### System install [ref](https://blakewilliams.me/posts/system-wide-rbenv-install).
 
 ```bash

@@ -21,3 +21,8 @@ If all else fails, restart the computer.
 ## ArgumentError: must specify a key
 
 This has popped up when doing sundry tasks, e.g. `as_json` for models with `attr_encrypted` when the key is nil. Just set the key.
+
+----
+## Ruby on Rails: post body/params is empty when posting a large payload/file
+
+This was actually an Apache issue, and enabling mod_security
