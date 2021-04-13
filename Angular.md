@@ -4,6 +4,7 @@
 ```bash
 ng new --routing --strict --style=css
 ng generate component messages
+ng generate component header/quick-launch
 ng generate service message
 ng generate module app-routing --flat --module=app
 # --flat puts the file in src/app instead of its own folder.
@@ -90,6 +91,13 @@ const routes: Routes = [
 
 ## Testing
 _See Angular/testing.md_
+
+## Devtools
+```js
+ng.getOwningComponent($0) // grants access to the component (fns, etc)
+ng.getContext($0).$implicit // grants access to the current object
+ng.getContext($0) // grants access to ngRepeat etc
+```
 
 ## Questions
 How can both angular app and rails app be on the same domain name?

@@ -62,3 +62,7 @@ Doesn't appear to be documented, but `MatInputModule` must be imported.
 ```js
 import { MatInputModule } from '@angular/material/input';
 ```
+
+----
+> NullInjectorError: No provider for MatDialogRef
+https://stackoverflow.com/a/53113329/507721
