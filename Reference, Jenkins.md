@@ -93,3 +93,36 @@ docker exec jenkins-docker curl https://reg.qa/v2/_catalog
 ### Jenkins workspace does not exist
 
 It might be as simple as adding `sh 'mkdir -p "${WORKSPACE}"'` at the top of the pipeline. But it might require setting up certificates for the local image registry again.
+
+
+## Docker image update
+Do you want to add a dependency to an image that's getting used by Jenkins.
+
+**On the host**
+```bash
+# Start up an instance
+docker run -it reg.qa/insureio:mariadb-5.5 /bin/bash
+```
+
+**In the container**
+```bash
+# Do some task to chagne the system, e.g.:
+yum makecache
+yum install -y qpdf
+```
+
+**On the host**
+```bash
+# Get the id or name of the open continer
+docker ps
+# Commit the changed container
+docker commit kind_volhard reg.qa/insureio:mariadb-5.5
+# Push the changes to the private registry
+docker push reg.qa/insureio:mariadb-5.5
+```
+
+**On the jenkins container**
+```bash
+# Pull the updated image
+docker pull reg.qa/insureio:mariadb-5.5
+```
