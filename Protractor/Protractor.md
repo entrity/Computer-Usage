@@ -17,7 +17,7 @@ It looks like the `=` is _not_ optional on at least some of the params.
 
 You can specify `capabilities.chromeOptions.args` more than once in order to specify multiple args.
 
-## Troubleshooting
+## Troubleshooting tests
 
 ### `browser.sleep(...)`
 
@@ -28,9 +28,9 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2**22;
 browser.sleep(2**22);
 ```
 
-## Errors
+### Errors
 
-* #### WebDriverError: element not interactable
+#### WebDriverError: element not interactable
 
 It may be that you want to click or select or send keys to an element which is currently outside the viewable window.
 
@@ -47,15 +47,15 @@ Maybe try to scroll the element into view?
 ```javascript
 browser.actions().mouseMove(element).perform()
 ```
-* #### Failed: javascript error: Failed to execute 'elementsFromPoint' on 'Document': The provided double value is non-finite.
+#### Failed: javascript error: Failed to execute 'elementsFromPoint' on 'Document': The provided double value is non-finite.
 
 You might be trying to run a scroll operation (as shown above) on a matcher that matches more than one element.
 
-* #### DevToolsActivePort file doesn't exist
+#### DevToolsActivePort file doesn't exist
 
 Add args `--disable-dev-shm-usage','--no-sandbox'` in browser capabilities in config.
 
-* #### E/launcher - session not created: Chrome version must be between 71 and 75
+#### E/launcher - session not created: Chrome version must be between 71 and 75
 
 You version of ChromeDriver is incompatible with your version of Chrome. You can install a new version of Chrome:
 
@@ -65,19 +65,19 @@ node_modules/protractor/bin/webdriver-manager update --versions.chrome 80.0.3987
 
 (You can uninstall all installed drivers and Chromes with `node_modules/protractor/bin/webdriver-manager clean`.)
 
-* #### (Prints 'Started', then hangs for a long time before failing)
+#### (Prints 'Started', then hangs for a long time before failing)
 
 * You need to actually have a server serving an instance of your app. Run `rails s`.
 * Or maybe your `baseUrl` in your config file is not pointing to the right place for your app server.
 
-* #### WebMock (something...)
+#### WebMock (something...)
 Run your rails server in development, not test environment. (Probably your Rails app is trying to submit a request to another application, as with `Net::HTTP`, and such requests have been stubbed out.)
 
-* #### Quote requests always return nothing
+#### Quote requests always return nothing
 Requests to Compulife might return nothing if your application is referencing Complife by a domain, such as `compulife.one`. We have to run Compulife as a web application on one of our own servers. You should make sure your `/etc/hosts` file supplies an IP address for that domain.
 
 
-* #### Failed: Error while running testForAngular: script timeout
+#### Failed: Error while running testForAngular: script timeout
 
 Increase the timeout in your project's protractor config file:
 ```js
