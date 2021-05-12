@@ -1,10 +1,20 @@
 # Redis
 
-```redis
+```
 keys * # lists all keys
 scan 0 count 99 # returns the next cursor and an array of keys (doesn't lock)
 type KEY # returns type of value
 del KEY
+```
+
+**Sidekiq example**
+```
+keys *
+type queues
+smembers queues
+type queue:default
+lrange queue:default 0 -1
+```
 
 # Lists
 lrange KEY 0 -1 # List list
