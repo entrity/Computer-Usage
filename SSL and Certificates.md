@@ -99,3 +99,34 @@ openssl pkey -in privateKey.key -pubout -outform pem | sha256sum
 openssl x509 -in certificate.crt -pubkey -noout -outform pem | sha256sum
 openssl req -in CSR.csr -pubkey -noout -outform pem | sha256sum
 ```
+
+### CSR Config file (with bells & whistles)
+```
+[req]
+distinguished_name = req_distinguished_name
+prompt = no
+
+[req_ext]
+subjectAltName = @alt_names
+
+[req_distinguished_name]
+C = US
+ST = CA
+O = Insureio
+OU = Web Test
+CN = insurancedivision.com
+
+[alt_names]
+DNS.0 = insurancedivision.com
+DNS.1 = *.insurancedivision.com
+```
+* `req` is the request section
+* `req_ext` holds fields for an extension to the request section
+* `C` Country
+* `ST` State or province
+* `L` Locality
+* `O` Organization name
+* `OU` Organizational unit name
+* `CN` Common name
+* `emailAddress`
+* `subjectAltName`

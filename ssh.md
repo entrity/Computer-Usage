@@ -25,6 +25,15 @@ jailed-user:x:1007:1009::/home/jailed-user:/bin/bash
 ```
 ...but I created the `home` directory and its contents in `/var/chrootjail`. (The home dirs themselves are owned by the users and have permissions `0700`.) (Don't forget to add the user to the `chrootjail` group, since I'm using a group-based rule.)
 
+```sh
+useradd -m --base-dir /var/chrootjail/home -g chrootjail sagicor # Create jailed home
+mkdir -m 0700 ~sagicor/.ssh
+install -m 0600 /dev/null ~sagicor/.ssh/authorized_keys
+chown -R sagicor ~sagicor
+# Change homedir so that when logged-in, it's relative to the chroot
+usermod -d /home/sagicor sagicor
+```
+
 ## SSHFS
 
 ```bash

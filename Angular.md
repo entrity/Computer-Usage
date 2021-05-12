@@ -4,6 +4,7 @@
 ```bash
 ng new --routing --strict --style=css
 ng generate component messages
+ng generate component header/quick-launch
 ng generate service message
 ng generate module app-routing --flat --module=app
 # --flat puts the file in src/app instead of its own folder.
@@ -89,11 +90,13 @@ const routes: Routes = [
 ```
 
 ## Testing
-```bash
-ng test
-ng e2e # Run e2e tests
-# Run for a different config (i.e. build target). https://angular.io/guide/deployment#local-development-in-older-browsers
-ng test --configuration es5
+_See Angular/testing.md_
+
+## Devtools
+```js
+ng.getOwningComponent($0) // grants access to the component (fns, etc)
+ng.getContext($0).$implicit // grants access to the current object
+ng.getContext($0) // grants access to ngRepeat etc
 ```
 
 ## Questions
@@ -119,3 +122,10 @@ multiple apps
 - `pipe(...)` - chain Observables together. Import from `rxjs/operators`
 - `| async` - AsyncPipe
 - `BrowserAnimationsModule` - animate transitions between routes
+- https://angular.io/guide/forms
+- @ContentChild or @ContentChildren
+- https://angular.io/guide/template-reference-variables
+- autocomplete
+    - https://material.angular.io/components/autocomplete/overview
+    - https://stackblitz.com/angular/epaooxplrdd?file=src%2Fmain.tshttps://stackblitz.com/angular/epaooxplrdd?file=src%2Fmain.tshttps://stackblitz.com/angular/epaooxplrdd?file=src%2Fmain.ts
+- Partial, Required, Pick, Readonly https://www.typescriptlang.org/docs/handbook/utility-types.html

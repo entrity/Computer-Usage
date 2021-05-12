@@ -27,3 +27,12 @@ git config --global user.signingkey [your_key_hash]
 ```
 _NB: Be sure to use a signing key whose email matches the email your gitconfig's user.email._
 _NB: Be sure to add the GPG pub key to your github user settings._
+
+## Clear git caches
+`git fetch -p` to prune your local caches
+
+## Replacing master
+```bash
+git branch -D master
+git checkout --track origin/master
+```
