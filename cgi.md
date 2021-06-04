@@ -7,6 +7,7 @@ Your cgi file may be binary or a script.
 The query string is obtained through the environment variable QUERY_STRING, and the POST body is obtained by reading stdin.
 
 ```bash
+export REQUEST_METHOD='GET' # Important for some executables, like compulife
 export QUERY_STRING='foo=bar&baz=qux'
 echo -n "the post body" | ./myscript.cgi
 ```
