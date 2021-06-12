@@ -53,6 +53,7 @@ config.action_mailer.delivery_method = :letter_opener
 
 ## Test credentials/settings
 ```ruby
+settings = Rails.application.config.action_mailer.smtp_settings
 smtp = Net::SMTP.new settings[:address], settings[:port]
 smtp.enable_starttls_auto if settings[:enable_starttls_auto]
 smtp.start(settings[:domain]) do
@@ -62,6 +63,8 @@ end
 
 ## Troubleshoot ActionMailer
 ```ruby
+settings = Rails.application.config.action_mailer.smtp_settings
+mail = MyMailer.with(my_locals).my_email
 mail.message.delivery_method.send(:build_smtp_session).start(settings[:domain], settings[:user_name], settings[:password], settings[:authentication]) do |smtp|
   $stderr.puts '---------------------------------------------'
   $stderr.puts smtp # Does this have what you expect?
