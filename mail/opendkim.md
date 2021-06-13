@@ -2,6 +2,8 @@
 An open source implementation of the DomainKeys Identified Mail (DKIM) sender authentication system.
 
 The following instructions come from Digitalocean's [How To Install and Configure DKIM with Postfix on Debian Wheezy](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-dkim-with-postfix-on-debian-wheezy)
+See corrections re. the socket on LinuxBabe's [Part 4: How to Set up SPF and DKIM with Postfix on Ubuntu Server](https://www.linuxbabe.com/mail-server/setting-up-dkim-and-spf).
+ 
 
 ## Install
 ```bash

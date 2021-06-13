@@ -3,14 +3,17 @@
 # Run this script to install and configure **openkdim** to work with
 # **postfix** on a Debian/Ubuntu server.
 
-# The following instructions come from Digitalocean's [How To Install and Configure DKIM with Postfix on Debian Wheezy](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-dkim-with-postfix-on-debian-wheezy)
+# The following instructions come from:
+# Digitalocean's [How To Install and Configure DKIM with Postfix on Debian Wheezy](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-dkim-with-postfix-on-debian-wheezy)
+# and
+# LinuxBabe's [Part 4: How to Set up SPF and DKIM with Postfix on Ubuntu Server](https://www.linuxbabe.com/mail-server/setting-up-dkim-and-spf)
 
 # Usage:
 #	./$0 <domain-name>
 
 # CONSTANTS
 DOMAIN=$1
-MSOCKET=inet:12301@localhost
+MSOCKET=local:/var/spool/postfix/opendkim/opendkim.sock
 POSTFIX_CONF='/etc/postfix/main.cf'
 
 function die() {
@@ -31,6 +34,17 @@ function ensure_line() {
 	local regex=`<<<"$content" build_regex`
 	if ! grep --line-regexp --quiet "$regex" "$fpath"; then
 		echo "${content[*]}" >> "$fpath"
+	fi
+}
+
+function replace_line() {
+	local fpath=$1
+	local replace_regex=$2
+	local replacement="${*:3}"
+	if grep --quiet "$replace_regex" "$fpath"; then
+		perl -pi -e "s#^($replace_regex)#\#\1\n$replacement#" "$fpath"
+	else
+		echo "$replacement" >> "$fpath"
 	fi
 }
 
@@ -55,28 +69,28 @@ ensure_line "/etc/opendkim.conf" 'Mode                    sv'
 ensure_line "/etc/opendkim.conf" 'PidFile                 /var/run/opendkim/opendkim.pid'
 ensure_line "/etc/opendkim.conf" 'SignatureAlgorithm      rsa-sha256'
 ensure_line "/etc/opendkim.conf" 'UserID                  opendkim:opendkim'
-ensure_line "/etc/opendkim.conf" 'Socket                  inet:12301@localhost'
+replace_line "/etc/opendkim.conf" "^Socket\s+\S+" 'Socket                  inet:12301@localhost'
 
 
 # Connect the milter to postfix
-ensure_line "/etc/default/opendkim" "SOCKET=\"$MSOCKET\""
+replace_line "/etc/default/opendkim" "^SOCKET=" "SOCKET=\"$MSOCKET\""
 ensure_line '/etc/postfix/main.cf' 'milter_protocol = 2'
 ensure_line '/etc/postfix/main.cf' 'milter_default_action = accept'
 
 # It is likely that a filter (SpamAssasin, Clamav etc.) is already used by Postfix; if the following parameters are present, just append the opendkim milter to them (milters are separated by a comma), the port number should be the same as in opendkim.conf:
-if grep -P '^smtpd_milters\s*=.*$MSOCKET' "$POSTFIX_CONF"; then
+if grep -P '^smtpd_milters\s*=.*local:opendkim/opendkim.sock' "$POSTFIX_CONF"; then
 	: # noop
 elif grep -P '^smtpd_milters\s*=' "$POSTFIX_CONF"; then
-	sed -i -e "s/^\(smtpd_milters\s*=.*\)$/\1, $MSOCKET/" "$POSTFIX_CONF"
+	sed -i -e "s/^\(smtpd_milters\s*=.*\)$/\1, local:opendkim/opendkim.sock/" "$POSTFIX_CONF"
 else
-	echo "smtpd_milters = $MSOCKET" >> "$POSTFIX_CONF"
+	echo "smtpd_milters = local:opendkim/opendkim.sock" >> "$POSTFIX_CONF"
 fi
-if grep -P '^non_smtpd_milters\s*=.*$MSOCKET' "$POSTFIX_CONF"; then
+if grep -P '^non_smtpd_milters\s*=.*$smtpd_milters' "$POSTFIX_CONF"; then
 	: # noop
 elif grep -P '^non_smtpd_milters\s*=' "$POSTFIX_CONF"; then
-	sed -i -e "s/^\(non_smtpd_milters\s*=.*\)$/\1, $MSOCKET/" "$POSTFIX_CONF"
+	sed -i -e "s/^\(non_smtpd_milters\s*=.*\)$/\1, \$smtpd_milters/" "$POSTFIX_CONF"
 else
-	echo "non_smtpd_milters = $MSOCKET" >> "$POSTFIX_CONF"
+	echo "non_smtpd_milters = \$smtpd_milters" >> "$POSTFIX_CONF"
 fi
 
 # Create a directory structure that will hold the trusted hosts, key tables, signing tables and crypto keys:
@@ -109,8 +123,7 @@ opendkim-genkey -s mail -d $DOMAIN # Generate the keys
 chown opendkim:opendkim mail.private # Change the owner of the private key to opendkim
 
 ## Restart services
-service postfix restart
-service opendkim restart
+systemctl restart opendkim postfix
 
 ## Instructions to add the public key to the domain’s DNS records
 echo -e "\033[33mCopy the following public key and add a TXT record to your domain's DNS entries, named \033[0mmail._domainkey.$DOMAIN\033[33m:\033[0m"
