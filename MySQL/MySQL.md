@@ -3,11 +3,20 @@
 ## Handy commands
 
 ```sql
+# Troubleshooting
 show full processlist;
+show variables like '%buffer%';
+# User commands
 select user,host from mysql.user;
 grant all on *.* to user 'foo'@'host';
+# Outfile
 select * from table into outfile 'file.tmp';
+# Table commands
 SELECT table_schema AS "Database", ROUND(SUM(data_length + index_length) / 1024 / 1024 / 1024, 2) AS "Size (GB)" FROM information_schema.tables;
+show table status from dataraptor_production;
+select table_name, data_length, index_length from information_schema.tables where table_schema = 'dataraptor_production' order by data_length;
+# Index commands
+show indexes from tasks;
 ```
 
 ## Binlogs
