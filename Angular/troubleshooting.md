@@ -102,3 +102,12 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar'; // near the to
 
 ----
 > Error: Expected one matching request for criteria "Match URL: $tasks.json", found 3 requests.
+
+----
+`<app-root></app-root>` is empty.
+
+**Solution:** Check the Rails server. Is it serving the dependencies?
+
+---
+> An unhandled exception occurred: Cannot find module '@angular-devkit/build-angular/package.json'
+Run `yarn` to get dependencies installed.

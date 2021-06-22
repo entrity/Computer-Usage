@@ -9,6 +9,7 @@ ng generate service message
 ng generate module app-routing --flat --module=app
 # --flat puts the file in src/app instead of its own folder.
 # --module=app tells the CLI to register it in the imports array of the AppModule.
+ng g c foo -m app # Shorthand
 ```
 
 ## Build
@@ -70,7 +71,7 @@ https://codecraft.tv/courses/angular/routing/nested-routes/
 https://stackblitz.com/edit/angular-router-prefix?file=src/app/app-routing.module.ts
 https://stackoverflow.com/a/62854244/507721
 
-```typescript
+```js
 const routes: Routes = [
   {
     path: '',
@@ -88,6 +89,18 @@ const routes: Routes = [
   }
 ];
 ```
+```html
+<h2>First Component</h2>
+
+<nav>
+  <ul>
+    <li><a routerLink="child-a">Child A</a></li>
+    <li><a routerLink="child-b">Child B</a></li>
+  </ul>
+</nav>
+
+<router-outlet></router-outlet>
+```
 
 ## Testing
 _See Angular/testing.md_
@@ -97,6 +110,26 @@ _See Angular/testing.md_
 ng.getOwningComponent($0) // grants access to the component (fns, etc)
 ng.getContext($0).$implicit // grants access to the current object
 ng.getContext($0) // grants access to ngRepeat etc
+```
+
+## Set new property on `window`
+```js
+(globalThis as any).myNewField = myValue;
+(window as any).myNewField = myValue;
+```
+
+## Element reference in Component class
+```html
+<some-tag #mytag></some-tag>
+```
+```js
+export class MyComponent implements OnInit {
+  @ViewChild('mytag') element?: ElementRef<any>;
+
+  ngAfterViewInit() {
+    console.dir('input', this.element);
+  }
+}
 ```
 
 ## Questions
@@ -129,3 +162,4 @@ multiple apps
     - https://material.angular.io/components/autocomplete/overview
     - https://stackblitz.com/angular/epaooxplrdd?file=src%2Fmain.tshttps://stackblitz.com/angular/epaooxplrdd?file=src%2Fmain.tshttps://stackblitz.com/angular/epaooxplrdd?file=src%2Fmain.ts
 - Partial, Required, Pick, Readonly https://www.typescriptlang.org/docs/handbook/utility-types.html
+
