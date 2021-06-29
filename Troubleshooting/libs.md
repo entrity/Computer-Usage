@@ -17,3 +17,8 @@ echo 'deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted' >> /etc/a
 apt update
 apt install libreadline7
 ```
+Other packages went missing after the Ubuntu 20.10 upgrade. I didn't care to add sources. I just downloaded and installed with `dpkg`:
+```bash
+# https://packages.ubuntu.com/focal/amd64/libffi7/download
+dpkg -i libffi7_3.3-4_amd64.deb
+```
