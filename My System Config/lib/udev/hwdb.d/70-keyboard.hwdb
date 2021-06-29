@@ -20,6 +20,7 @@
 ##################
 # Apple Magic Keyboard
 #################
+# Bluetooth
 evdev:input:b0005v004Cp0267e0067*
  KEYBOARD_KEY_700e6=rightctrl
  KEYBOARD_KEY_700e7=rightalt
@@ -35,6 +36,7 @@ evdev:input:b0005v004Cp0267e0067*
  KEYBOARD_KEY_70045=end # f12
  KEYBOARD_KEY_c00b8=delete # Eject
 
+# USB
 evdev:input:b0003v05ACp0267e0110*
  KEYBOARD_KEY_700e6=rightctrl
  KEYBOARD_KEY_700e7=rightalt
@@ -49,3 +51,9 @@ evdev:input:b0003v05ACp0267e0110*
  KEYBOARD_KEY_70044=home # f11
  KEYBOARD_KEY_70045=end # f12
  KEYBOARD_KEY_c00b8=delete # Eject
+
+##################
+# Thinkpad builtin keyboard special keys
+#################
+evdev:input:b0019v17AAp5054e4101*
+ KEYBOARD_KEY_1f=dashboard
