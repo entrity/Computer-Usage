@@ -23,3 +23,8 @@ cryptsetup --type luks open "$PARTITION" encrypted
 mount -t ext4 "/dev/mapper/encrypted" "/mnt/crypted"
 ```
 Confirm that the mount is encrypted by running `dmsetup status` or `cryptsetup status /dev/mapper/encrypted`.
+
+## Confirm that the passphrase is what you think it is
+```bash
+echo -n "anycurrentpassphrase" | sudo cryptsetup luksOpen --test-passphrase /dev/sdc1 && echo "There is a key available with this passphrase."
+```
