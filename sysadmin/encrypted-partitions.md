@@ -14,13 +14,12 @@ cryptsetup luksFormat "$PARTITION"
 cryptsetup open "$PARTITION" encrypted
 # Create a filesystem on the new partition
 mkfs.ext4 "/dev/mapper/encrypted"
-# Create a mountpoint
-mkdir "/mnt/chroot-jails"
 ```
 
 ## (Re-)mounting the new volume
 ```bash
+mkdir "/mnt/crypted"
 cryptsetup --type luks open "$PARTITION" encrypted
-mount -t ext4 "/dev/mapper/encrypted" "/mnt/chroot-jails"
+mount -t ext4 "/dev/mapper/encrypted" "/mnt/crypted"
 ```
 Confirm that the mount is encrypted by running `dmsetup status` or `cryptsetup status /dev/mapper/encrypted`.
