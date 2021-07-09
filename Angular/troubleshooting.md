@@ -111,3 +111,17 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar'; // near the to
 ---
 > An unhandled exception occurred: Cannot find module '@angular-devkit/build-angular/package.json'
 Run `yarn` to get dependencies installed.
+
+---
+Angular is looking for fontawesome at top-level
+> GET http://pinney.local.com:4200/fontawesome-webfont.woff2?v=4.7.0 net::ERR_ABORTED 404 (Not Found)
+**Solution**
+cf. https://stackoverflow.com/a/39557671/507721
+- `rm -r node_modules/@fortawesome/`
+- `npm install --save font-awesome`
+- Add to `styles` array in `angular.json`:
+```
+"../node_modules/bootstrap/dist/css/bootstrap.css",
+"../node_modules/font-awesome/css/font-awesome.css"
+```
+Don't forget to restart your ng server.

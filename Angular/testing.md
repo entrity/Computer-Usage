@@ -5,16 +5,17 @@ ng test
 ng e2e # Run e2e tests
 # Run for a different config (i.e. build target). https://angular.io/guide/deployment#local-development-in-older-browsers
 ng test --configuration es5
-```
 ng test --help
 ng test --watch=false
 ng test --no-watch
 ng test --include=glob
+ng test --browsers ChromeHeadless # Headless
 
 ng test project-name
 ng test --only-changed
 ng test --testNamePattern componentnam
 ng test --include fileordir
+```
 
 ## Testing a service with dependencies
 ```js
@@ -129,3 +130,20 @@ beforeEach(() => {
   valueServiceSpy = TestBed.inject(ValueService) as jasmine.SpyObj<ValueService>;
 });
 ```
+
+## Adding another browser config
+In the `karma.conf.js`, specify:
+```js
+customLaunchers: {
+  ChromeForJenkins: {
+    base: 'Chrome',
+    flags: [
+      '--headless',
+      '--disable-gpu',
+      '--window-size=1920,1080',
+      '--remote-debugging-port=9222',
+    ],
+  },
+},
+```
+...then run `ng test --browsers=ChromeForJenkins`.
