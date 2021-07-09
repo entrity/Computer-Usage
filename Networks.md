@@ -4,13 +4,24 @@
 
 An emulation system for easy, safe testing on your own computer.
 
-## cli network commands
+## cli network tools
+
+### ab
+> Apache HTTP server benchmarking tool
 
 ### nmcli (Network Manager CLI) 
 ```bash
 nmcli radio wifi off # Turn off wifi
 nmcli dev wifi # List networks
 nmcli dev wifi rescan # Then wait, then re-try `nmcli dev wifi`
+```
+
+## arpspoof
+_In `dsniff` Ubuntu package._
+cf. http://jvns.ca/blog/2013/10/29/day-18-in-ur-connection/
+Perform ARP cache poisoning: tell both of the following devices (router and user device) that the other's IP address maps to your MAC address, so when they send packets for said IP address, they'll specify your MAC address is the recipient.
+```bash
+sudo arpspoof -i wlan0 -t 192.168.0.13 192.168.0.1
 ```
 
 ## scapy
