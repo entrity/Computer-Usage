@@ -16,7 +16,7 @@ yum install -y qpdf
 **On the host**
 ```bash
 # Get the id or name of the open continer
-docker ps
+docker ps # Suppose it reveals `reg.qa/insureio:mariadb-5.5`
 # Commit the changed container
 docker commit kind_volhard reg.qa/insureio:mariadb-5.5
 # Push the changes to the private registry
