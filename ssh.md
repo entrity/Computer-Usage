@@ -6,33 +6,7 @@
 ## SSHD
 
 ### chroot jail
-
-I set up the following in `/etc/ssh/sshd_config`
-```
-Match Group chrootjail
-	ChrootDirectory /var/chrootjail/
-	PasswordAuthentication no
-	AuthorizedKeysFile /var/chrootjail/home/%u/.ssh/authorized_keys
-```
-
-To make the jail have an interface, though, I needed to copy `/bin/bash` into the jail and also its dependencies, which are given from `ldd /bin/bash`.
-
-I also had to create the `/var/chrootjail/home` directory and create a user and set his home directory and set his group membership.
-
-In `/etc/passwd`, I use the usual paths: 
-```
-jailed-user:x:1007:1009::/home/jailed-user:/bin/bash
-```
-...but I created the `home` directory and its contents in `/var/chrootjail`. (The home dirs themselves are owned by the users and have permissions `0700`.) (Don't forget to add the user to the `chrootjail` group, since I'm using a group-based rule.)
-
-```sh
-useradd -m --base-dir /var/chrootjail/home -g chrootjail sagicor # Create jailed home
-mkdir -m 0700 ~sagicor/.ssh
-install -m 0600 /dev/null ~sagicor/.ssh/authorized_keys
-chown -R sagicor ~sagicor
-# Change homedir so that when logged-in, it's relative to the chroot
-usermod -d /home/sagicor sagicor
-```
+_See sysadmin/chroot-jail.md_
 
 ## SSHFS
 
