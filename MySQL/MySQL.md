@@ -8,7 +8,8 @@ show full processlist;
 show variables like '%buffer%';
 # User commands
 select user,host from mysql.user;
-grant all on *.* to user 'foo'@'host';
+create user 'foo'@'host' identified by 'pw';
+grant all on *.* to 'foo'@'host';
 # Outfile
 select * from table into outfile 'file.tmp';
 # Table commands
