@@ -7,6 +7,7 @@
 * `iostat` examine "cpu steal" and others
 * `monit` manage, monitor unix systems; automate repair
 * `ngrep` network grep
+* `perf` multitool
 * `pstree` show process tree
 * `sar` see logs of cpu, ram, i/o for the day
 * `ss` dump socket statistics (similar to `netstat`)
@@ -38,6 +39,13 @@ Manage and monitor Unix systems; automatic maintenance & repair. Take actions in
 _See also systemctl, which can automatically restart services._ Monit uses cron; `systemctl` has less power but can respond faster (immediately). Monit can monitor processes, systems, hosts, files/dirs, disks.
 
 See also `Monit.md`
+
+----
+## perf
+https://jvns.ca/debugging-zine.pdf
+* `perf record ...` - shows you C/nodejs/java functions in a process
+* `perf report` - look at results of `perf record ...`
+* `perf top`
 
 ----
 ## pstree
